@@ -1,23 +1,48 @@
 <template>
   <v-app id="inspire">
     <v-content>
-      <v-container fluid fill-height>
+      <v-container>
         <v-layout align-center justify-center>
+
+          <v-dialog v-model="dialog" persistent max-width="290">
+      <v-card>
+        <v-card-title class="headline">{{ error.code }} </v-card-title>
+        <v-card-text> {{ error.message }} </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" flat @click.native="dialog = false">Cerrar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Login form</v-toolbar-title>
+                <v-toolbar-title>
+                  Login             
+                </v-toolbar-title>
                 <v-spacer></v-spacer>
+                
               </v-toolbar>
               <v-card-text>
                 <v-form>
-                  <v-text-field prepend-icon="person" name="login" label="Login" type="text"></v-text-field>
-                  <v-text-field id="password" prepend-icon="lock" name="password" label="Password" type="password"></v-text-field>
+                  <v-text-field prepend-icon="person" name="login" label="Login" type="text" v-model="email"></v-text-field>
+                  <v-text-field prepend-icon="lock" name="password" label="Password" type="password" v-model="password"></v-text-field>
+                  
                 </v-form>
               </v-card-text>
               <v-card-actions>
+                
+                <div v-if="process" class="text-xs-center">
+                    <v-progress-circular  
+                      :size="25"
+                      color="primary"
+                      indeterminate
+                    ></v-progress-circular>
+                  </div>
                 <v-spacer></v-spacer>
-                <v-btn color="primary">Login</v-btn>
+                <v-btn color="primary" @click="login">Login </v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -28,28 +53,35 @@
 </template>
 
 <script>
+  import firebase from 'firebase'
   export default {
     data: () => ({
       drawer: null,
       email: "",
-      password: ""
+      password: "",
+      process: false,
+      dialog:false,
+      error:{}
     }),
     props: {
       source: String
     },
     methods:{
       login(){
-        var $this = this;
-        firebase.auth().signInWithEmailAndPassword($this.email, $this.password).then(function (firebaseUser) {
-          $this.toastMsg = "Has iniciado sesion correctamente";
-          // $this.$.toast.open();
-          location.href = "/list-tours";
+        var vm = this;
+        console.log(vm.email, vm.password);
+        vm.process = true;
+        firebase.auth().signInWithEmailAndPassword(vm.email, vm.password).then(function (firebaseUser) {
+          vm.process = false;
+          console.log(firebaseUser);
         })
         .catch(function (error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          $this.toastMsg = "Error al iniciar sesion "+ errorMessage;
-          $this.$.toast.open();
+          vm.process = false;
+          vm.error = error;
+          vm.dialog = true;
+          console.log(error);
+          // vm.toastMsg = "Error al iniciar sesion "+ errorMessage;
+          // vm.$.toast.open();
         });
       }
     }
