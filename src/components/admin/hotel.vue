@@ -1,32 +1,41 @@
 <template>
   <v-container>
     <v-layout>
-      
-      <v-btn color="primary" dark @click.stop="dialog = true">Agregar</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn color="primary" dark @click="addTour">Agregar</v-btn>
     </v-layout>
-    <v-layout>
-      
+    <v-layout justify-center>
       <v-card>
         <v-card-title>
-          Hotel
+          <h3>Listado de hoteles</h3>
           <v-spacer></v-spacer>
-          <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+          <v-text-field v-model="search" append-icon="search" label="Buscar" single-line hide-details></v-text-field>
         </v-card-title>
-        <v-data-table :headers="headers" :items="desserts" :search="search">
-          <template slot="items" slot-scope="n">
-            <td>{{ n.item.name }}</td>
-            <td class="text-xs-right">{{ n.item.calories }}</td>
-            <td class="text-xs-right">{{ n.item.fat }}</td>
-            <td class="text-xs-right">{{ n.item.carbs }}</td>
-            <td class="text-xs-right">{{ n.item.protein }}</td>
-            <td class="text-xs-right">{{ n.item.iron }}</td>
+        <v-data-table :headers="headers" :items="tours" :search="search">
+          <template slot="items" slot-scope="tour">
+            <td>{{ tour.item.tour }}</td>
+            <td class="text-xs-right">{{ tour.item.description.substr(0,30)}}...</td>
+            <!-- <td class="text-xs-right">{{ tour.item.placeid}}</td> -->
+            <td class="text-xs-right">{{ tour.item.service }}</td>
+            <td class="text-xs-right">{{ tour.item.include }}</td>
+            <td class="text-xs-right">
+              <img :src="tour.item.image" width="50" height="50">
+            </td>
+            <!-- <td class="text-xs-right">{{ tour.item.$key }}</td> -->
+            <td class="text-xs-right">{{ tour.item.place }}</td>
+            <td>
+              <v-btn small @click="editTour(tour.item)"> <v-icon small color="orange">edit</v-icon></v-btn>
+              <v-btn small @click="removeTour(tour.item)"> <v-icon small color="red">delete</v-icon></v-btn>
+              </td> 
+            <!-- <td><v-btn @click="editTour(tour.item)"> Edit</v-btn></td> -->
           </template>
           <v-alert slot="no-results" :value="true" color="error" icon="warning">
-            Your search for "{{ search }}" found no results.
+            Tu busqueda "{{ search }}", no encontro ningun resultado.
           </v-alert>
         </v-data-table>
       </v-card>
     </v-layout>
+
     <v-layout row>
       <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
         <v-card tile>
@@ -34,10 +43,12 @@
             <v-btn icon dark @click.native="dialog = false">
               <v-icon>close</v-icon>
             </v-btn>
-            <v-toolbar-title>Settings</v-toolbar-title>
+            <v-toolbar-title v-if="tourSelected.length> 0">Edita un tour</v-toolbar-title>
+            <v-toolbar-title v-else>Agrega un tour</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <v-btn dark flat @click.native="dialog = false">Save</v-btn>
+              <v-btn dark flat v-if="tourSelected.length> 0" :disabled="!valid" @click="saveTour">Editar</v-btn>
+              <v-btn dark flat v-else :disabled="!valid" @click="createTour">Crear</v-btn>
             </v-toolbar-items>
             <v-menu bottom right offset-y>
               <v-btn slot="activator" dark icon>
@@ -45,19 +56,54 @@
               </v-btn>
             </v-menu>
           </v-toolbar>
-          <v-card-text>
-            <v-list three-line subheader>
-              <v-subheader>General</v-subheader>
-              <v-list-tile avatar>
-                <v-list-tile-action>
-                  <v-checkbox></v-checkbox>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title>Sound</v-list-tile-title>
-                  <v-list-tile-sub-title>Auto-update apps at any time. Data charges may apply</v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list>
+          <v-card-text>          
+            <v-form v-model="valid">
+              <v-text-field
+                v-model="tourSelected.tour"
+                :rules="nameRules"
+                :counter="50"
+                label="Nombre del tour"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="tourSelected.description"
+                :rules="descripcionRules"
+                :counter="50"
+                label="Descripcion del tour"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="tourSelected.include"
+                :rules="incluyeRules"
+                :counter="50"
+                label="Incluye"
+                required
+              ></v-text-field>
+              <v-select 
+                :items="places"
+                v-model="tourSelected.placeid"
+                item-value="$key"
+                item-text="place"
+                label="Selecciona lugar"
+                single-line
+              ></v-select>
+              <v-radio-group v-model="tourSelected.service">
+                <v-radio                
+                  label="Hotel"
+                  value="hotel"
+                ></v-radio>
+                <v-radio                
+                  label="Tour"
+                  value="tour"
+                ></v-radio>
+                
+              </v-radio-group>
+              <v-btn raised class="primary" @click="inputFileClick">Subir imagen</v-btn>
+              <input type="file" ref="inputFile" accept="image/*" @change="fileChange">
+              <img :src="imageUrl" alt="Foto subida">
+
+            </v-form>
+
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -65,130 +111,264 @@
   </v-container>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        dialog: false,
-        search: "",
-        headers: [{
-            text: "Dessert (100g serving)",
-            align: "left",
-            sortable: false,
-            value: "name"
-          },
-          {
-            text: "Calories",
-            value: "calories"
-          },
-          {
-            text: "Fat (g)",
-            value: "fat"
-          },
-          {
-            text: "Carbs (g)",
-            value: "carbs"
-          },
-          {
-            text: "Protein (g)",
-            value: "protein"
-          },
-          {
-            text: "Iron (%)",
-            value: "iron"
-          }
-        ],
-        desserts: [{
-            value: false,
-            name: "Frozen Yogurt",
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            // iron: "1%"
-          },
-          {
-            value: false,
-            name: "Ice cream sandwich",
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: "1%"
-          },
-          {
-            value: false,
-            name: "Eclair",
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: "7%"
-          },
-          {
-            value: false,
-            name: "Cupcake",
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: "8%"
-          },
-          {
-            value: false,
-            name: "Gingerbread",
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: "16%"
-          },
-          {
-            value: false,
-            name: "Jelly bean",
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: "0%"
-          },
-          {
-            value: false,
-            name: "Lollipop",
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: "2%"
-          },
-          {
-            value: false,
-            name: "Honeycomb",
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: "45%"
-          },
-          {
-            value: false,
-            name: "Donut",
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: "22%"
-          },
-          {
-            value: false,
-            name: "KitKat",
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: "6%"
-          }
-        ]
-      };
+import firebase from "firebase";
+export default {
+  data() {
+    return {
+      imageUrl:'',
+      dialog: false,
+      search: "",
+      valid: false,
+      tours: [],
+      places: [],
+      files: Object,
+      tourSelected: {
+        tour: "",
+        description: "",
+        placeid: [],
+        include: "",
+        service: "",
+        image: "",
+        radioService: "",
+        place: ""
+      },
+      nameRules: [
+        // v => !!v || "Nombre es requerido",
+        // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
+      ],
+      descripcionRules: [
+        // v => !!v || "Descripcion es requerido",
+        // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
+      ],
+      incluyeRules: [
+        // v => !!v || "Incluye es requerido",
+        // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
+      ],
+
+      headers: [
+        {
+          text: "Nombre",
+          // align: "left",
+          // sortable: false,
+          value: "tour"
+        },
+        {
+          text: "Descripcion",
+          value: "description"
+        },
+        // {
+        //   text: "Id Lugar",
+        //   value: "placeid"
+        // },
+        {
+          text: "Servicio",
+          value: "service"
+        },
+        {
+          text: "Incluye",
+          value: "include"
+        },
+        {
+          text: "Imagen",
+          value: "image"
+        },
+        // {
+        //   text: "Key",
+        //   value: "$key"
+        // },
+        {
+          text: "Lugar",
+          value: "place"
+        },
+        {
+          text: "Accion"
+          // value: ""
+        }
+      ]
+    };
+  },
+  methods: {
+    inputFileClick(){
+      var vm = this;
+      vm.$refs.inputFile.click();
     },
-  };
+    fileChange(event){
+      console.log(event);
+      var vm = this;
+      const files = event.target.files;
+      let filename = files[0].name;
+      console.log(files[0]);
+      if(filename.lastIndexOf('.') <= 0){
+        return alert('Porfavor agrega una imagen valida');
+      }
+      const fileReader = new FileReader();
+      fileReader.addEventListener('load', () => {
+        vm.imageUrl = fileReader.result;
+        console.log(vm.imageUrl);
+      });
+      fileReader.readAsDataURL(files[0]);
+      vm.image = files[0];
+      vm.files = files;
+    },
+    editTour(tour) {
+      console.log(tour);
+      var vm = this;
+      vm.tourSelected = tour;
+      vm.dialog = true;
+    },
+    addTour(){
+      var vm = this;
+      vm.dialog = true;
+      vm.tourSelected = {};
+    },
+    saveTour(){
+      var vm = this; 
+      firebase.database().ref("/").child("tours").child(vm.idtour).update({
+          //image: form.image_url,
+          description: vm.tourSelected.description,
+          include: vm.tourSelected.include,
+          tour: vm.tourSelected.tour,
+          placeid: vm.tourSelected.placeid,
+          service: vm.tourSelected.service
+        });
+    },
+    createTour(tour) {
+      console.log(tour);
+      var vm = this;
+      vm.dialog = true;
+        var file = vm.files[0];
+        var metadata = {
+          contentType: 'image/jpeg',
+        };
+        console.log(file);
+        if(file !== undefined){
+          var storageRef = firebase.storage().ref();
+          var uploadTask = storageRef.child('tours/' + file.name).put(file, metadata);
+          uploadTask.on('state_changed', function (snapshot) {
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          }, function (error) {
+            // Handle unsuccessful uploads
+          }, function () {
+            // Handle successful uploads on complete
+            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+              console.log('File available at', downloadURL);
+              // var downloadURL = downloadURL;
+              firebase.database().ref("/").child("tours").push({
+                image: downloadURL,
+                description: vm.tourSelected.description,
+                tour: vm.tourSelected.tour,
+                include: vm.tourSelected.include,
+                placeid: vm.tourSelected.placeid,
+                service: vm.tourSelected.service,
+              });
+            });
+            // var downloadURL = uploadTask.snapshot.downloadURL;
+            // console.log(downloadURL);
+            // form.image_url = downloadURL;
+            // firebase.database().ref("/").child("tours").push({
+            //   image: downloadURL,
+            //   description: vm.tourSelected.description,
+            //   tour: vm.tourSelected.tour,
+            //   include: vm.tourSelected.include,
+            //   placeid: vm.tourSelected.placeid,
+            //   service: vm.tourSelected.service,
+            // });
+            // vm.$.toast.open();
+          });
+        }else{
+              firebase.database().ref("/").child("tours").push({
+                // image: downloadURL,
+                description: vm.tourSelected.description,
+                tour: vm.tourSelected.tour,
+                include: vm.tourSelected.include,
+                placeid: vm.tourSelected.placeid,
+                service: vm.tourSelected.service,
+              });
+        }
+        
+    },
+    removeTour(tour) {
+      console.log(tour);
+      var vm = this;
+      vm.tourSelected = tour;
+      vm.dialog = true;
+    },
+    changeTourStatus(tour) {
+      console.log(tour);
+      var vm = this;
+      vm.tourSelected = tour;
+      vm.dialog = true;
+    },
+    getPlaces() {
+      var vm = this;
+      var places_ = [];
+      firebase
+        .database()
+        .ref("places")
+        .on("value", function(places) {
+          // var places = places.val();
+          places.forEach(function(place) {
+            var obj = place.val();
+            obj.$key = place.key;
+            places_.push(obj);
+          });
+          vm.places = places_;
+          console.log(vm.places);
+        });
+
+    },
+    getTours() {
+      var vm = this;
+      firebase
+        .database()
+        .ref("tours").orderByChild("service").equalTo("hotel")
+        .on("value", function(snapshot) {
+          console.log(snapshot.val());
+          var tours = [];
+          var num = snapshot.numChildren();
+          var cont = 0;
+          // vm.tours = JSON.stringify(snapshot.val());
+          snapshot.forEach(function(child) {
+            if (child.val().image !== "") {
+              var obj = child.val();
+              if (obj.placeid !== undefined) {
+                firebase
+                  .database()
+                  .ref("places")
+                  .child(obj.placeid)
+                  .on("value", function(place) {
+                    // if(place.val() !== null)
+                    obj.place = place.val().place;
+                    obj.$key = child.key;
+                    tours.push(obj);
+                    cont++;
+                    if (num == cont) {
+                      vm.tours = tours;
+                    }
+                  });
+              } else {
+                console.log("martin solis");
+                obj.$key = child.key;
+                tours.push(obj);
+                cont++;
+                if (num == cont) {
+                  vm.tours = tours;
+                  console.log("tours", vm.tours);
+                }
+              }
+            }
+          });
+        });
+    }
+  },
+  mounted() {
+    var vm = this;
+    console.log("mounted ok");
+    vm.getPlaces();
+    vm.getTours();
+  },
+  props: {
+    source: String
+  }
+};
 </script>

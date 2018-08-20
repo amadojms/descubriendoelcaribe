@@ -1,6 +1,9 @@
 <template>
   <v-container grid-list-md text-xs-center>
+
     <v-layout row >
+      
+      
       <v-flex sm12 >
         <v-text-field
         
@@ -15,9 +18,21 @@
         ></v-text-field>
         </v-flex>
     </v-layout>
+    
+          <v-flex class="xs12 sm12 ">
+            <div class="display-1 font-weight-thin pad-15">Los mejores Hoteles de Cancun y CDMX</div></v-flex> 
+        <v-layout id="parallax" justify-center style="padding-top:50px">
+      <v-progress-circular  v-if="spinner"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+    
+    </v-layout>
+
         <v-layout row wrap>
+          
           <v-flex  v-for="hotel in filteredHotels" :key="hotel.key" xs12 sm6 md4>
-            <v-card>
+            <v-card class="xs-0 pointer" :to="'/detail/'+hotel.$key">
               <v-card-media class="white--text" height="400px" :src="hotel.image">
                 <v-container fill-height fluid>
                   <v-layout fill-height>
@@ -41,21 +56,23 @@
       return {
         hotels: [],
         db: Object,
-        filtro:""
+        filtro:"",
+        spinner:false
       }
     },
     computed:{
       filteredHotels() {
-        var $this = this;
-        return $this.hotels.filter((item) => {
-          return item.tour !== undefined ? item.tour.match($this.filtro) : []
+        var vm = this;
+        return vm.hotels.filter((item) => {
+          return item.tour !== undefined ? item.tour.match(vm.filtro) : []
         })
       },
     },
     methods: {
       getHotels() {
-        var $this = this;
-        $this.db.child("tours").orderByChild("service").equalTo("hotel").on("value", function (snapshot) {
+        var vm = this;
+        vm.spinner = true;
+        vm.db.child("tours").orderByChild("service").equalTo("hotel").on("value", function (snapshot) {
           
           var hotels = [];
           var num = snapshot.numChildren();
@@ -65,7 +82,7 @@
             if(child.val().image !== ""){
               var obj = child.val();
               if(obj.placeid !== undefined){
-                $this.db.child("places").child(obj.placeid).on("value", function (place) {
+                vm.db.child("places").child(obj.placeid).on("value", function (place) {
                   
                   // if(place.val() !== null)
                   obj.place = place.val().place;
@@ -73,7 +90,8 @@
                   hotels.push(obj);
                   cont++;
                   if (num == cont) {
-                    $this.hotels = hotels;
+                    vm.hotels = hotels;
+                    vm.spinner = false;
                   }
                 });
               }else{
@@ -81,7 +99,8 @@
                 hotels.push(obj);
                 cont++;
                 if (num == cont) {
-                  $this.hotels = hotels;
+                  vm.hotels = hotels;
+                  vm.spinner = false;
                 }
               }
             }
@@ -91,11 +110,22 @@
       }
     },
     mounted() {
-      var $this = this;
-      $this.db = firebase.database().ref()
-      $this.getHotels();
+      var vm = this;
+      vm.db = firebase.database().ref()
+      vm.getHotels();
     },
     // name: 'Tours'
   }
 
 </script>
+
+<style>
+.pointer {
+  cursor: pointer;
+}
+
+.pad-15{
+  padding: 15px;
+}
+
+</style>

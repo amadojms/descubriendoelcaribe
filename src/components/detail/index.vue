@@ -1,54 +1,41 @@
 <template>
-  <v-layout id="parallax" justify-center>
+  <v-layout id="parallax" justify-center style="padding-top:50px">
       <v-flex xs12 sm6 md6>
-        <v-card>
+        <v-card class="opacity elevation-9">
           <v-toolbar >
+            <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
+            <v-spacer></v-spacer>
             <v-btn
-              color="pink"
+              color="primary"
               dark
               small
               absolute
               bottom
-              left
+              right
               fab
+              @click="dialog = true"
             >
-              <v-icon>add</v-icon>
+              <v-icon>email</v-icon>
             </v-btn>
+                      
           </v-toolbar>
-          <v-card-text style="height: 236px;" class="grey lighten-5"></v-card-text>
-          <v-card-text style="height: 100px; position: relative"></v-card-text>
+          <!-- <v-card-text style="height: 236px;" class="grey lighten-5"></v-card-text> -->
+          <v-card-text style="padding-top:25px; position: relative">
+            {{tour.description}}
+          </v-card-text>
         </v-card>
       </v-flex>
-    <!-- <v-flex xs12 sm6>
-      <v-btn fab dark small color="primary">
-      <v-icon dark>remove</v-icon>
-    </v-btn>  
-    </v-flex>
-    <v-flex xs12 sm6>
-      <v-card>
-        <v-card-title primary-title>
-          <div>
-            <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
-            <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
-          </div>
-        </v-card-title>
 
-        <v-card-actions>
-          <v-btn flat color="orange">Volver</v-btn>
-          <v-btn flat color="orange">Explore</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex> -->
-    <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
         <v-toolbar dark color="primary">
           <v-btn icon dark @click.native="dialog = false">
             <v-icon>close</v-icon>
           </v-btn>
-          <v-toolbar-title>Settings</v-toolbar-title>
+          <v-toolbar-title>Email</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn dark flat @click.native="dialog = false">Save</v-btn>
+            <v-btn dark flat @click.native="dialog = false">Enviar correo</v-btn>
           </v-toolbar-items>
         </v-toolbar>
         <v-divider></v-divider>
@@ -65,15 +52,6 @@
           </v-list-tile>
           <v-list-tile avatar>
             <v-list-tile-action>
-              <v-checkbox v-model="sound"></v-checkbox>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Sound</v-list-tile-title>
-              <v-list-tile-sub-title>Auto-update apps at any time. Data charges may apply</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile avatar>
-            <v-list-tile-action>
               <v-checkbox v-model="widgets"></v-checkbox>
             </v-list-tile-action>
             <v-list-tile-content>
@@ -83,74 +61,7 @@
           </v-list-tile>
         </v-list>
       </v-card>
-    </v-dialog> -->
-
-    <!-- <v-flex xs12 sm12 md12>
-      
-      <v-card>
-          <v-layout row justify-end>
-            <v-flex xs1>  
-              <v-speed-dial
-        v-model="fab"
-        :top="top"
-        :bottom="bottom"
-        :right="right"
-        :left="left"
-        :direction="direction"
-        :open-on-hover="hover"
-        :transition="transition"
-      >
-        <v-btn
-          slot="activator"
-          v-model="fab"
-          color="blue darken-2"
-          dark
-          fab
-        >
-          <v-icon>account_circle</v-icon>
-          <v-icon>close</v-icon>
-        </v-btn>
-        <v-btn
-          fab
-          dark
-          small
-          color="green"
-        >
-          <v-icon>edit</v-icon>
-        </v-btn>
-        <v-btn
-          fab
-          dark
-          small
-          color="indigo"
-        >
-          <v-icon>add</v-icon>
-        </v-btn>
-      </v-speed-dial>
- </v-flex>
-          </v-layout>
-
-      
-
-        <v-card-title primary-title>
-
-
-
-          <div>
-            <h3 class="headline mb-0">{{tour.tour}}</h3>
-            <div>{{tour.description}}</div>
-          </div>
-        </v-card-title>
-
-
-<v-card-actions>
-          <v-btn flat color="orange" to="/">Back</v-btn>
-          <v-btn flat color="orange" @click="sendMail">Email</v-btn>
-        </v-card-actions>
-
-      </v-card> -->
-
-
+    </v-dialog>
     </v-flex>
   </v-layout>
 </template>
@@ -172,7 +83,7 @@ export default {
     hover: false,
     tabs: null,
     top: true,
-    right: true,
+    right: false,
     bottom: false,
     left: false,
     transition: "slide-y-reverse-transition"
@@ -232,6 +143,9 @@ export default {
   position: relative;
 }
 
+.opacity{
+  opacity: .8;
+}
 #parallax {
   /* The image used */
 

@@ -14,12 +14,23 @@
         ></v-text-field>
         </v-flex>
     </v-layout>
+        </v-layout>
+    
+          <v-flex class="xs12 sm12 pad-15"><div class="display-1 font-weight-thin">Los mejores Tours de Cancun y CDMX</div></v-flex> 
+        <v-layout justify-center>
+      <v-progress-circular  v-if="spinner"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+    
+    </v-layout>
+
     <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
-      <v-flex v-for="tour in filteredTours" :key="tour.$key" md4 sm6  xs12>
-        <a :href="'/detail/'+tour.$key">
-         <v-card class="xs-0 pointer">
-              <v-card-media class="white--text" height="400px" :src="tour.image">
+      <v-flex v-for="tour in filteredTours" :key="tour.$key" xs12 sm6 md4 lg3   >
+        <a>
+         <v-card class="xs-0 pointer elevation-9" :to="'/detail/'+tour.$key">
+              <v-card-media class="white--text" height="300px" :src="tour.image">
                 <v-container fill-height fluid>
                   <v-layout fill-height>
                     <v-flex xs12 align-end flexbox>
@@ -44,21 +55,23 @@
       return {
         tours: [],
         db: Object,
-        filter:""
+        filter:"",
+        spinner:false
       }
     },
     computed:{
       filteredTours() {
-        var $this = this;
-        return $this.tours.filter((item) => {
-          return item.tour !== undefined ? item.tour.toLowerCase().match($this.filter.toLowerCase()) : []
+        var vm = this;
+        return vm.tours.filter((item) => {
+          return item.tour !== undefined ? item.tour.toLowerCase().match(vm.filter.toLowerCase()) : []
         })
       }
     },
     methods: {
       getTours() {
-        var $this = this;
-        $this.db.child("tours").orderByChild("service").equalTo("tour").on("value", function (snapshot) {
+        var vm = this;
+        vm.spinner = true;
+        vm.db.child("tours").orderByChild("service").equalTo("tour").on("value", function (snapshot) {
           var tours = [];
           var num = snapshot.numChildren();
           console.log(num);
@@ -67,14 +80,14 @@
             if(child.val().image !== ""){
               var obj = child.val();
               if(obj.placeid !== undefined){
-                $this.db.child("places").child(obj.placeid).on("value", function (place) {
+                vm.db.child("places").child(obj.placeid).on("value", function (place) {
                   obj.place = place.val().place;
                   obj.$key = child.key;
                   tours.push(obj);
                   cont++;
                   if (num == cont) {
-                    $this.tours = tours;
-                    console.log($this.tours);
+                    vm.tours = tours;
+                    vm.spinner = false;
                   }
                 });
               }else{
@@ -82,7 +95,8 @@
                 tours.push(obj);
                 cont++;
                 if (num == cont) {
-                  $this.tours = tours;
+                  vm.tours = tours;
+                  vm.spinner = false;
                 }
               }
             }
@@ -93,9 +107,9 @@
     },
 
     mounted() {
-      var $this = this;
-      $this.db = firebase.database().ref();
-      $this.getTours();
+      var vm = this;
+      vm.db = firebase.database().ref();
+      vm.getTours();
     },
   }
 
@@ -104,6 +118,10 @@
 <style>
 .pointer {
   cursor: pointer;
+}
+
+.pad-15{
+  padding: 15px;
 }
 
 a{

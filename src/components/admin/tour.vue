@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-layout>
-      <v-btn color="primary" dark @click="addTour">Agregar</v-btn>
       <v-spacer></v-spacer>
+      <v-btn color="primary" dark @click="addTour">Agregar</v-btn>
     </v-layout>
-    <v-layout>
+    <v-layout justify-center>
       <v-card>
         <v-card-title>
           <h3>Listado de tours</h3>

@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" fixed app>
+    <!-- <v-navigation-drawer v-model="drawer" fixed app>
       <v-list dense>
         <v-list-tile @click="currentComponent = 'admin-tour'">
           <v-list-tile-action>
@@ -27,10 +27,17 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-    </v-navigation-drawer>
-    <v-toolbar color="indigo" dark>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>Administra datos importantes de tu empresa</v-toolbar-title>
+    </v-navigation-drawer> -->
+    <v-toolbar color="indigo" dark dense>
+      <!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
+      <v-toolbar-title>Configuracion</v-toolbar-title>
+        <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn v-for="(item,index) in menu" :key="index" flat @click="currentComponent = item.component">
+              {{item.title}}
+              <v-icon right dark>{{item.icon}}</v-icon>
+              </v-btn>
+          </v-toolbar-items>
     </v-toolbar>
     <keep-alive>
       <component v-bind:is="currentComponent"></component>
@@ -44,7 +51,24 @@
   export default {
     data: () => ({
       drawer: null,
-      currentComponent: 'admin-tour'
+      currentComponent: 'admin-tour',
+        menu: [
+          {
+            component: "admin-tour",
+            title: "Tour",
+            icon: "directions_bus"
+          },
+          {
+            component: "admin-hotel",
+            title: "Hotel",
+            icon: "domain"
+          },
+          {
+            component: "admin-place",
+            title: "Lugares",
+            icon: "place"
+          }
+        ]
     }),
     components: {
       'admin-tour':AdminTour,
