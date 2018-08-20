@@ -72,6 +72,7 @@ export default {
       search: "",
       valid: false,
       places: [],
+      fb: firebase.database(),
       placeSelected: {
         place: ""
       },
@@ -101,7 +102,7 @@ export default {
     savePlace(place){
       console.log(place);
       var vm = this; 
-      firebase.database().ref("/").child("places").child(vm.placeSelected.$key).update({
+      vm.fb.ref("/").child("places").child(vm.placeSelected.$key).update({
         place: vm.tourSelected.place
       });
       vm.dialog = false;
@@ -109,24 +110,36 @@ export default {
     createPlace(place) {
       var vm = this;
       vm.dialog = true;
-      firebase.database().ref("/").child("places").push({
+      vm.fb.ref("/").child("places").push({
         place: vm.placeSelected.place
       });
       vm.dialog = false;
     },
     removePlace(place) {
-      console.log(place);
       var vm = this;
-      vm.placeSelected = place;
-      vm.dialog = true;
+      vm.tourSelected = place;
+      vm.$swal({
+        title: '¿Estas seguro?',
+        text: "Si eliminar!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar!'
+      }).then((result) => {
+        if (result.value) {
+          console.log("Eliminado");
+          vm.fb.ref("places").child(place.$key).remove();
+          vm.$swal('Eliminado!','Lugar eliminado.','success');
+          // vm.places.splice(place,1);
+        }
+      })
     },
     getPlaces() {
       var vm = this;
-      var places_ = [];
-      firebase
-        .database()
-        .ref("places")
-        .once("value", function(places) {
+      
+      vm.fb.ref("places").on("value", function(places) {
+        var places_ = [];
           places.forEach(function(place) {
             var obj = place.val();
             obj.$key = place.key;

@@ -122,6 +122,7 @@ export default {
       tours: [],
       places: [],
       files: Object,
+      fb: firebase.database(),
       tourSelected: {
         tour: "",
         description: "",
@@ -156,10 +157,6 @@ export default {
           text: "Descripcion",
           value: "description"
         },
-        // {
-        //   text: "Id Lugar",
-        //   value: "placeid"
-        // },
         {
           text: "Servicio",
           value: "service"
@@ -172,10 +169,6 @@ export default {
           text: "Imagen",
           value: "image"
         },
-        // {
-        //   text: "Key",
-        //   value: "$key"
-        // },
         {
           text: "Lugar",
           value: "place"
@@ -193,11 +186,9 @@ export default {
       vm.$refs.inputFile.click();
     },
     fileChange(event){
-      console.log(event);
       var vm = this;
       const files = event.target.files;
       let filename = files[0].name;
-      console.log(files[0]);
       if(filename.lastIndexOf('.') <= 0){
         return alert('Porfavor agrega una imagen valida');
       }
@@ -211,7 +202,6 @@ export default {
       vm.files = files;
     },
     editTour(tour) {
-      console.log(tour);
       var vm = this;
       vm.tourSelected = tour;
       vm.dialog = true;
@@ -223,8 +213,7 @@ export default {
     },
     saveTour(){
       var vm = this; 
-      firebase.database().ref("/").child("tours").child(vm.idtour).update({
-          //image: form.image_url,
+      vm.fb.ref("/").child("tours").child(vm.idtour).update({
           description: vm.tourSelected.description,
           include: vm.tourSelected.include,
           tour: vm.tourSelected.tour,
@@ -233,14 +222,12 @@ export default {
         });
     },
     createTour(tour) {
-      console.log(tour);
       var vm = this;
       vm.dialog = true;
         var file = vm.files[0];
         var metadata = {
           contentType: 'image/jpeg',
         };
-        console.log(file);
         if(file !== undefined){
           var storageRef = firebase.storage().ref();
           var uploadTask = storageRef.child('tours/' + file.name).put(file, metadata);
@@ -253,7 +240,7 @@ export default {
             uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
               console.log('File available at', downloadURL);
               // var downloadURL = downloadURL;
-              firebase.database().ref("/").child("tours").push({
+              vm.fb.ref("/").child("tours").push({
                 image: downloadURL,
                 description: vm.tourSelected.description,
                 tour: vm.tourSelected.tour,
@@ -265,7 +252,7 @@ export default {
             // var downloadURL = uploadTask.snapshot.downloadURL;
             // console.log(downloadURL);
             // form.image_url = downloadURL;
-            // firebase.database().ref("/").child("tours").push({
+            // vm.fb.ref("/").child("tours").push({
             //   image: downloadURL,
             //   description: vm.tourSelected.description,
             //   tour: vm.tourSelected.tour,
@@ -276,7 +263,7 @@ export default {
             // vm.$.toast.open();
           });
         }else{
-              firebase.database().ref("/").child("tours").push({
+              vm.fb.ref("/").child("tours").push({
                 // image: downloadURL,
                 description: vm.tourSelected.description,
                 tour: vm.tourSelected.tour,
@@ -285,13 +272,28 @@ export default {
                 service: vm.tourSelected.service,
               });
         }
-        
     },
     removeTour(tour) {
       console.log(tour);
       var vm = this;
       vm.tourSelected = tour;
-      vm.dialog = true;
+      
+      swal({
+        title: '¿Estas seguro?',
+        text: "Si eliminar!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar!'
+      }).then((result) => {
+        if (result.value) {
+          vm.fb.ref("/tours").child(tour.$key).remove().then(function(){
+            swal('Eliminado!','Tour eliminado.','success');
+          });
+        }
+      })
+
     },
     changeTourStatus(tour) {
       console.log(tour);
@@ -302,10 +304,7 @@ export default {
     getPlaces() {
       var vm = this;
       var places_ = [];
-      firebase
-        .database()
-        .ref("places")
-        .on("value", function(places) {
+      vm.fb.ref("places").on("value", function(places) {
           // var places = places.val();
           places.forEach(function(place) {
             var obj = place.val();
@@ -319,15 +318,10 @@ export default {
     },
     getTours() {
       var vm = this;
-      firebase
-        .database()
-        .ref("tours")
-        .on("value", function(snapshot) {
-          console.log(snapshot.val());
+      vm.fb.ref("tours").on("value", function(snapshot) {
           var tours = [];
           var num = snapshot.numChildren();
           var cont = 0;
-          // vm.tours = JSON.stringify(snapshot.val());
           snapshot.forEach(function(child) {
             if (child.val().image !== "") {
               var obj = child.val();
@@ -337,7 +331,6 @@ export default {
                   .ref("places")
                   .child(obj.placeid)
                   .on("value", function(place) {
-                    // if(place.val() !== null)
                     obj.place = place.val().place;
                     obj.$key = child.key;
                     tours.push(obj);
@@ -347,13 +340,11 @@ export default {
                     }
                   });
               } else {
-                console.log("martin solis");
                 obj.$key = child.key;
                 tours.push(obj);
                 cont++;
                 if (num == cont) {
                   vm.tours = tours;
-                  console.log("tours", vm.tours);
                 }
               }
             }
@@ -366,6 +357,7 @@ export default {
     console.log("mounted ok");
     vm.getPlaces();
     vm.getTours();
+    // this.$swal('Heading', 'this is a Heading', 'success');
   },
   props: {
     source: String

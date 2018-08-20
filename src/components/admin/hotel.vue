@@ -25,7 +25,7 @@
             <td class="text-xs-right">{{ tour.item.place }}</td>
             <td>
               <v-btn small @click="editTour(tour.item)"> <v-icon small color="orange">edit</v-icon></v-btn>
-              <v-btn small @click="removeTour(tour.item)"> <v-icon small color="red">delete</v-icon></v-btn>
+              <v-btn small @click="removeHotel(tour.item)"> <v-icon small color="red">delete</v-icon></v-btn>
               </td> 
             <!-- <td><v-btn @click="editTour(tour.item)"> Edit</v-btn></td> -->
           </template>
@@ -287,11 +287,12 @@ export default {
         }
         
     },
-    removeTour(tour) {
-      console.log(tour);
+    removeHotel(hotel) {
+      console.log(hotel);
       var vm = this;
-      vm.tourSelected = tour;
-      vm.dialog = true;
+      vm.tourSelected = hotel;
+      
+      vm.fb.ref("/tours").child(hotel.$key).remove();
     },
     changeTourStatus(tour) {
       console.log(tour);

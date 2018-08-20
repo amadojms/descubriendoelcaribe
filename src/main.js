@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import firebase from 'firebase'
+import VueSweetalert2 from 'vue-sweetalert2';
 
 // import Axios from 'axios';
 import 'vuetify/dist/vuetify.min.css'
@@ -20,7 +21,7 @@ var config = {
   messagingSenderId: "586415413263"
 };
 firebase.initializeApp(config);
-
+Vue.use(VueSweetalert2);
 // Vue.use(Axios);
 Vue.use(Vuetify, { theme: {
   primary: '#4785f5',
