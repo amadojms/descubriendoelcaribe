@@ -125,6 +125,9 @@ export default {
       var vm = this;
       console.log("enviando correo");
       vm.dialog = true;
+      this.axios.get('/sendMail').then((response) => {
+        console.log(response.data)
+      })
     }
   },
   mounted() {

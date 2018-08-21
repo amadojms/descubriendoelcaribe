@@ -8,7 +8,7 @@
       src="https://cdn.vuetifyjs.com/images/cards/dark-beach.jpg"
     >
       <v-layout wrap>
-        <v-flex xs12>
+        <!-- <v-flex xs12>
           <v-progress-linear
             :active="isUpdating"
             class="ma-0"
@@ -16,33 +16,11 @@
             height="4"
             indeterminate
           ></v-progress-linear>
-        </v-flex>
+        </v-flex> -->
         <v-flex
           text-xs-right
           xs12
         >
-          <v-menu
-            bottom
-            left
-            transition="slide-y-transition"
-          >
-            <v-btn
-              slot="activator"
-              icon
-            >
-              <v-icon>more_vert</v-icon>
-            </v-btn>
-            <v-list>
-              <v-list-tile @click="isUpdating = true">
-                <v-list-tile-action>
-                  <v-icon>mdi-settings</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title>Update</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list>
-          </v-menu>
         </v-flex>
         <v-layout
           align-start
@@ -50,31 +28,42 @@
           justify-end
           pa-3
         >
-          <h3 class="headline">Contacto</h3>
-          <span class="grey--text text--lighten-1">{{ title }}</span>
+          <h3 class="headline">Contactanos</h3>
+          <span class="grey--text text--lighten-1">Para armar el mejor paquete, al mejor precio.</span>
         </v-layout>
       </v-layout>
     </v-card-media>
     <v-form>
       <v-container>
         <v-layout wrap>
-          <v-flex xs12 md6>
+          <v-flex xs12 sm12 md12>
             <v-text-field
               v-model="name"
-              :disabled="isUpdating"
               box
               color="blue-grey lighten-2"
-              label="Name"
+              label="Nombre *"
             ></v-text-field>
           </v-flex>
-          <v-flex xs12 md6>
+          <v-flex xs12 sm12 md12>
             <v-text-field
-              v-model="title"
-              :disabled="isUpdating"
+              v-model="email"
               box
               color="blue-grey lighten-2"
-              label="Title"
+              label="Email *"
             ></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm12 md12>
+            <v-text-field
+              v-model="phone"
+              box
+              color="blue-grey lighten-2"
+              label="Telefono (opcional)"
+            ></v-text-field>
+          </v-flex>
+          <v-flex>
+            <div class="text-xs-right">
+              <v-btn round color="primary" dark @click="sendEmail">Enviar</v-btn>
+            </div>
           </v-flex>
         </v-layout>
       </v-container>
@@ -84,7 +73,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import { messaging } from "firebase";
 export default {
   data() {
@@ -97,49 +86,39 @@ export default {
     };
 
     return {
-      autoUpdate: true,
-      friends: ["Sandra Adams", "Britta Holt"],
-      isUpdating: false,
-      name: "Midnight Crew",
-      title: "The summer breeze"
+      name: "",
+      email: "",
+      phone: "",
+      // isUpdating:false
     };
   },
 
-  watch: {
-    isUpdating(val) {
-      if (val) {
-        setTimeout(() => (this.isUpdating = false), 3000);
-      }
-    }
-  },
+  // watch: {
+  //   isUpdating(val) {
+  //     if (val) {
+  //       setTimeout(() => (this.isUpdating = false), 3000);
+  //     }
+  //   }
+  // },
   methods: {
     sendEmail() {
-      axios
-        .post(`localhost:3000/sendEmail`, {
-          tour: tour,
-          emailClient: emailClient,
-          message: message
-        })
-        .then(response => {})
-        .catch(e => {
-          this.errors.push(e);
-        });
-    },
-    getMsg() {
-      axios.get('http://localhost:3000/test', {
-          body: this.postBody
+      var vm = this;
+      this.axios.post("http://localhost:3000/sendEmail", {
+          name: vm.name,
+          email: vm.email,
+          phone: vm.phone
         })
         .then(response => {
           console.log(response);
         })
         .catch(e => {
-          this.errors.push(e);
+          console.log(e);
+          // this.errors.push(e);
         });
     }
   },
-  mounted(){
+  mounted() {
     var vm = this;
-    vm.getMsg();
   }
 };
 </script>

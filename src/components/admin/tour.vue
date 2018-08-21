@@ -248,6 +248,7 @@ export default {
                 placeid: vm.tourSelected.placeid,
                 service: vm.tourSelected.service,
               });
+              vm.dialog = false;
             });
             // var downloadURL = uploadTask.snapshot.downloadURL;
             // console.log(downloadURL);
@@ -271,6 +272,7 @@ export default {
                 placeid: vm.tourSelected.placeid,
                 service: vm.tourSelected.service,
               });
+              vm.dialog = false;
         }
     },
     removeTour(tour) {
@@ -278,8 +280,8 @@ export default {
       var vm = this;
       vm.tourSelected = tour;
       
-      swal({
-        title: '¿Estas seguro?',
+      this.$swal({
+        title: 'ï¿½Estas seguro?',
         text: "Si eliminar!",
         type: 'warning',
         showCancelButton: true,
@@ -288,9 +290,8 @@ export default {
         confirmButtonText: 'Si, eliminar!'
       }).then((result) => {
         if (result.value) {
-          vm.fb.ref("/tours").child(tour.$key).remove().then(function(){
-            swal('Eliminado!','Tour eliminado.','success');
-          });
+          vm.fb.ref("/tours").child(tour.$key).remove();
+          this.$swal('Eliminado!','Tour eliminado.','success');
         }
       })
 
@@ -318,7 +319,7 @@ export default {
     },
     getTours() {
       var vm = this;
-      vm.fb.ref("tours").on("value", function(snapshot) {
+      vm.fb.ref("tours").orderByChild("service").equalTo("tour").on("value", function(snapshot) {
           var tours = [];
           var num = snapshot.numChildren();
           var cont = 0;

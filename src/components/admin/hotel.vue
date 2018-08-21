@@ -235,7 +235,7 @@ export default {
     createTour(tour) {
       console.log(tour);
       var vm = this;
-      vm.dialog = true;
+      
         var file = vm.files[0];
         var metadata = {
           contentType: 'image/jpeg',
@@ -261,6 +261,7 @@ export default {
                 placeid: vm.tourSelected.placeid,
                 service: vm.tourSelected.service,
               });
+              vm.dialog = false;
             });
             // var downloadURL = uploadTask.snapshot.downloadURL;
             // console.log(downloadURL);
@@ -284,6 +285,7 @@ export default {
                 placeid: vm.tourSelected.placeid,
                 service: vm.tourSelected.service,
               });
+              vm.dialog = false;
         }
         
     },
@@ -291,8 +293,22 @@ export default {
       console.log(hotel);
       var vm = this;
       vm.tourSelected = hotel;
+            
+      this.$swal({
+        title: '�Estas seguro?',
+        text: "Si eliminar!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar!'
+      }).then((result) => {
+        if (result.value) {
+          vm.fb.ref("/tours").child(hotel.$key).remove();
+          // this.$swal('Eliminado!','Tour eliminado.','success');
+        }
+      })
       
-      vm.fb.ref("/tours").child(hotel.$key).remove();
     },
     changeTourStatus(tour) {
       console.log(tour);
