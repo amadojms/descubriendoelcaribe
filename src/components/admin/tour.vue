@@ -264,15 +264,15 @@ export default {
             // vm.$.toast.open();
           });
         }else{
-          vm.fb.ref("/").child("tours").push({
-            // image: downloadURL,
-            description: vm.tourSelected.description,
-            tour: vm.tourSelected.tour,
-            include: vm.tourSelected.include,
-            placeid: vm.tourSelected.placeid,
-            service: vm.tourSelected.service,
-          });
-          vm.dialog = false;
+              vm.fb.ref("/").child("tours").push({
+                // image: downloadURL,
+                description: vm.tourSelected.description,
+                tour: vm.tourSelected.tour,
+                include: vm.tourSelected.include,
+                placeid: vm.tourSelected.placeid,
+                service: vm.tourSelected.service,
+              });
+              vm.dialog = false;
         }
     },
     removeTour(tour) {

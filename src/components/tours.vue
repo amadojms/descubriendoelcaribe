@@ -9,20 +9,19 @@
           single-line
           prepend-icon="search"
           solo
-          suffix="Ingresa texto para una busqueda"
           v-model="filter"
         ></v-text-field>
+        <!-- suffix="Ingresa texto para una busqueda" -->
         </v-flex>
     </v-layout>
-        </v-layout>
-    
-          <v-flex class="xs12 sm12 pad-15"><div class="display-1 font-weight-thin">Los mejores Tours de Cancun y CDMX</div></v-flex> 
-        <v-layout justify-center>
-      <v-progress-circular  v-if="spinner"
+  
+          
+    <v-layout justify-center>
+      <v-flex class="xs12 sm12 pad-15"><div class="display-1 font-weight-thin">Los mejores Tours de Cancun y CDMX</div></v-flex> 
+        <v-progress-circular  v-if="spinner"
       indeterminate
       color="primary"
     ></v-progress-circular>
-    
     </v-layout>
 
     <v-container grid-list-md text-xs-center>

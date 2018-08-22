@@ -236,7 +236,6 @@ export default {
     createTour(tour) {
       console.log(tour);
       var vm = this;
-
         var file = vm.files[0];
         var metadata = {
           contentType: 'image/jpeg',
@@ -278,15 +277,15 @@ export default {
             // vm.$.toast.open();
           });
         }else{
-          vm.fb.ref("/").child("tours").push({
-            // image: downloadURL,
-            description: vm.tourSelected.description,
-            tour: vm.tourSelected.tour,
-            include: vm.tourSelected.include,
-            placeid: vm.tourSelected.placeid,
-            service: vm.tourSelected.service,
-          });
-          vm.dialog = false;
+              firebase.database().ref("/").child("tours").push({
+                // image: downloadURL,
+                description: vm.tourSelected.description,
+                tour: vm.tourSelected.tour,
+                include: vm.tourSelected.include,
+                placeid: vm.tourSelected.placeid,
+                service: vm.tourSelected.service,
+              });
+              vm.dialog = false;
         }
         
     },

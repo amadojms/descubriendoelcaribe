@@ -1,27 +1,22 @@
 <template>
   <v-container grid-list-md text-xs-center>
-
     <v-layout row >
-      
-      
       <v-flex sm12 >
         <v-text-field
-        
           id="search_tour"
           name="in_tour"
           label="Busca un hotel"
           single-line
           prepend-icon="search"
           solo
-          suffix="Ingresa texto para una busqueda"
           v-model="filtro"
         ></v-text-field>
         </v-flex>
     </v-layout>
     
-          <v-flex class="xs12 sm12 ">
-            <div class="display-1 font-weight-thin pad-15">Los mejores Hoteles de Cancun y CDMX</div></v-flex> 
-        <v-layout id="parallax" justify-center style="padding-top:50px">
+          
+        <v-layout justify-center>
+          <v-flex class="xs12 sm12 pad-15"><div class="display-1 font-weight-thin">Los mejores Hoteles de Cancun y CDMX</div></v-flex> 
       <v-progress-circular  v-if="spinner"
       indeterminate
       color="primary"
