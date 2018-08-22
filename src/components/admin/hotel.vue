@@ -122,6 +122,7 @@ export default {
       tours: [],
       places: [],
       files: Object,
+      fb:firebase.database(),
       tourSelected: {
         tour: "",
         description: "",
@@ -223,7 +224,7 @@ export default {
     },
     saveTour(){
       var vm = this; 
-      firebase.database().ref("/").child("tours").child(vm.idtour).update({
+      vm.fb.ref("/").child("tours").child(vm.idtour).update({
           //image: form.image_url,
           description: vm.tourSelected.description,
           include: vm.tourSelected.include,
@@ -235,7 +236,7 @@ export default {
     createTour(tour) {
       console.log(tour);
       var vm = this;
-      vm.dialog = true;
+
         var file = vm.files[0];
         var metadata = {
           contentType: 'image/jpeg',
@@ -261,6 +262,7 @@ export default {
                 placeid: vm.tourSelected.placeid,
                 service: vm.tourSelected.service,
               });
+              vm.dialog = false;
             });
             // var downloadURL = uploadTask.snapshot.downloadURL;
             // console.log(downloadURL);
@@ -276,14 +278,15 @@ export default {
             // vm.$.toast.open();
           });
         }else{
-              firebase.database().ref("/").child("tours").push({
-                // image: downloadURL,
-                description: vm.tourSelected.description,
-                tour: vm.tourSelected.tour,
-                include: vm.tourSelected.include,
-                placeid: vm.tourSelected.placeid,
-                service: vm.tourSelected.service,
-              });
+          vm.fb.ref("/").child("tours").push({
+            // image: downloadURL,
+            description: vm.tourSelected.description,
+            tour: vm.tourSelected.tour,
+            include: vm.tourSelected.include,
+            placeid: vm.tourSelected.placeid,
+            service: vm.tourSelected.service,
+          });
+          vm.dialog = false;
         }
         
     },
@@ -291,8 +294,23 @@ export default {
       console.log(hotel);
       var vm = this;
       vm.tourSelected = hotel;
+      vm.$swal({
+        title: '¿Estas seguro?',
+        text: "Si eliminar!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar!'
+      }).then((result) => {
+        if (result.value) {
+          console.log("Eliminado");
+          vm.fb.ref("/").child("tours").child(hotel.$key).remove();
+          vm.$swal('Eliminado!','Lugar eliminado.','success');
+          // vm.places.splice(place,1);
+        }
+      })
       
-      vm.fb.ref("/tours").child(hotel.$key).remove();
     },
     changeTourStatus(tour) {
       console.log(tour);
@@ -303,11 +321,7 @@ export default {
     getPlaces() {
       var vm = this;
       var places_ = [];
-      firebase
-        .database()
-        .ref("places")
-        .on("value", function(places) {
-          // var places = places.val();
+      vm.fb.ref("places").on("value", function(places) {
           places.forEach(function(place) {
             var obj = place.val();
             obj.$key = place.key;
@@ -321,24 +335,15 @@ export default {
     getTours() {
       var vm = this;
       firebase
-        .database()
-        .ref("tours").orderByChild("service").equalTo("hotel")
-        .on("value", function(snapshot) {
-          console.log(snapshot.val());
+        .database().ref("tours").orderByChild("service").equalTo("hotel").on("value", function(snapshot) {
           var tours = [];
           var num = snapshot.numChildren();
           var cont = 0;
-          // vm.tours = JSON.stringify(snapshot.val());
           snapshot.forEach(function(child) {
             if (child.val().image !== "") {
               var obj = child.val();
               if (obj.placeid !== undefined) {
-                firebase
-                  .database()
-                  .ref("places")
-                  .child(obj.placeid)
-                  .on("value", function(place) {
-                    // if(place.val() !== null)
+                firebase.database().ref("places").child(obj.placeid).on("value", function(place) {
                     obj.place = place.val().place;
                     obj.$key = child.key;
                     tours.push(obj);
@@ -348,13 +353,11 @@ export default {
                     }
                   });
               } else {
-                console.log("martin solis");
                 obj.$key = child.key;
                 tours.push(obj);
                 cont++;
                 if (num == cont) {
                   vm.tours = tours;
-                  console.log("tours", vm.tours);
                 }
               }
             }

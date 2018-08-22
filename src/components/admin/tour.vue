@@ -223,7 +223,7 @@ export default {
     },
     createTour(tour) {
       var vm = this;
-      vm.dialog = true;
+      
         var file = vm.files[0];
         var metadata = {
           contentType: 'image/jpeg',
@@ -248,6 +248,7 @@ export default {
                 placeid: vm.tourSelected.placeid,
                 service: vm.tourSelected.service,
               });
+              vm.dialog = false;
             });
             // var downloadURL = uploadTask.snapshot.downloadURL;
             // console.log(downloadURL);
@@ -263,22 +264,22 @@ export default {
             // vm.$.toast.open();
           });
         }else{
-              vm.fb.ref("/").child("tours").push({
-                // image: downloadURL,
-                description: vm.tourSelected.description,
-                tour: vm.tourSelected.tour,
-                include: vm.tourSelected.include,
-                placeid: vm.tourSelected.placeid,
-                service: vm.tourSelected.service,
-              });
+          vm.fb.ref("/").child("tours").push({
+            // image: downloadURL,
+            description: vm.tourSelected.description,
+            tour: vm.tourSelected.tour,
+            include: vm.tourSelected.include,
+            placeid: vm.tourSelected.placeid,
+            service: vm.tourSelected.service,
+          });
+          vm.dialog = false;
         }
     },
     removeTour(tour) {
       console.log(tour);
       var vm = this;
       vm.tourSelected = tour;
-      
-      swal({
+      vm.$swal({
         title: '¿Estas seguro?',
         text: "Si eliminar!",
         type: 'warning',
@@ -288,9 +289,10 @@ export default {
         confirmButtonText: 'Si, eliminar!'
       }).then((result) => {
         if (result.value) {
-          vm.fb.ref("/tours").child(tour.$key).remove().then(function(){
-            swal('Eliminado!','Tour eliminado.','success');
-          });
+          console.log("Eliminado");
+          vm.fb.ref("/").child("tours").child(tour.$key).remove();
+          vm.$swal('Eliminado!','Tour eliminado.','success');
+          // vm.places.splice(place,1);
         }
       })
 
@@ -314,11 +316,10 @@ export default {
           vm.places = places_;
           console.log(vm.places);
         });
-
     },
     getTours() {
       var vm = this;
-      vm.fb.ref("tours").on("value", function(snapshot) {
+      vm.fb.ref("tours").orderByChild("service").equalTo("tour").on("value", function(snapshot) {
           var tours = [];
           var num = snapshot.numChildren();
           var cont = 0;
@@ -326,11 +327,7 @@ export default {
             if (child.val().image !== "") {
               var obj = child.val();
               if (obj.placeid !== undefined) {
-                firebase
-                  .database()
-                  .ref("places")
-                  .child(obj.placeid)
-                  .on("value", function(place) {
+                firebase.database().ref("places").child(obj.placeid).on("value", function(place) {
                     obj.place = place.val().place;
                     obj.$key = child.key;
                     tours.push(obj);

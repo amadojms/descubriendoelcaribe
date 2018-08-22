@@ -138,7 +138,7 @@ export default {
     getPlaces() {
       var vm = this;
       
-      vm.fb.ref("places").on("value", function(places) {
+      vm.fb.ref("/").child("places").on("value", function(places) {
         var places_ = [];
           places.forEach(function(place) {
             var obj = place.val();
