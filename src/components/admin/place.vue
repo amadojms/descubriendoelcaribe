@@ -15,9 +15,13 @@
           <template slot="items" slot-scope="place">
             <td>{{ place.item.place }}</td>
             <td>
-              <v-btn small @click="editPlace(place.item)"> <v-icon small color="orange">edit</v-icon></v-btn>
-              <v-btn small @click="removePlace(place.item)"> <v-icon small color="red">delete</v-icon></v-btn>
-              </td> 
+              <v-btn small @click="editPlace(place.item)">
+                <v-icon small color="orange">edit</v-icon>
+              </v-btn>
+              <v-btn small @click="removePlace(place.item)">
+                <v-icon small color="red">delete</v-icon>
+              </v-btn>
+            </td>
           </template>
           <v-alert slot="no-results" :value="true" color="error" icon="warning">
             Tu busqueda "{{ search }}", no encontro ningun resultado.
@@ -46,17 +50,10 @@
               </v-btn>
             </v-menu>
           </v-toolbar>
-          <v-card-text>          
+          <v-card-text>
             <v-form v-model="valid">
-              <v-text-field
-                v-model="placeSelected.place"
-                :rules="nameRules"
-                :counter="50"
-                label="Nombre del place"
-                required
-              ></v-text-field>
+              <v-text-field v-model="placeSelected.place" :rules="nameRules" :counter="50" label="Nombre del place" required></v-text-field>
             </v-form>
-
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -64,83 +61,81 @@
   </v-container>
 </template>
 <script>
-import firebase from "firebase";
-export default {
-  data() {
-    return {
-      dialog: false,
-      search: "",
-      valid: false,
-      places: [],
-      fb: firebase.database(),
-      placeSelected: {
-        place: ""
-      },
-      nameRules: [
-        // v => !!v || "Nombre es requerido",
-        // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
-      ],
-      headers: [
-        {
+  import firebase from "firebase";
+  export default {
+    data() {
+      return {
+        dialog: false,
+        search: "",
+        valid: false,
+        places: [],
+        fb: firebase.database(),
+        placeSelected: {
+          place: ""
+        },
+        nameRules: [
+          // v => !!v || "Nombre es requerido",
+          // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
+        ],
+        headers: [{
           text: "Lugar",
           value: "place"
-        },
-      ]
-    };
-  },
-  methods: {
-    editPlace(place) {
-      var vm = this;
-      vm.placeSelected = place;
-      vm.dialog = true;
+        }, ]
+      };
     },
-    addPlace(){
-      var vm = this;
-      vm.dialog = true;
-      vm.placeSelected = {};
-    },
-    savePlace(place){
-      console.log(place);
-      var vm = this; 
-      vm.fb.ref("/").child("places").child(vm.placeSelected.$key).update({
-        place: vm.tourSelected.place
-      });
-      vm.dialog = false;
-    },
-    createPlace(place) {
-      var vm = this;
-      vm.dialog = true;
-      vm.fb.ref("/").child("places").push({
-        place: vm.placeSelected.place
-      });
-      vm.dialog = false;
-    },
-    removePlace(place) {
-      var vm = this;
-      vm.tourSelected = place;
-      vm.$swal({
-        title: '¿Estas seguro?',
-        text: "Si eliminar!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, eliminar!'
-      }).then((result) => {
-        if (result.value) {
-          console.log("Eliminado");
-          vm.fb.ref("places").child(place.$key).remove();
-          vm.$swal('Eliminado!','Lugar eliminado.','success');
-          // vm.places.splice(place,1);
-        }
-      })
-    },
-    getPlaces() {
-      var vm = this;
-      
-      vm.fb.ref("/").child("places").on("value", function(places) {
-        var places_ = [];
-          places.forEach(function(place) {
+    methods: {
+      editPlace(place) {
+        var vm = this;
+        vm.placeSelected = place;
+        vm.dialog = true;
+      },
+      addPlace() {
+        var vm = this;
+        vm.dialog = true;
+        vm.placeSelected = {};
+      },
+      savePlace(place) {
+        console.log(place);
+        var vm = this;
+        vm.fb.ref("/").child("places").child(vm.placeSelected.$key).update({
+          place: vm.tourSelected.place
+        });
+        vm.dialog = false;
+      },
+      createPlace(place) {
+        var vm = this;
+        vm.dialog = true;
+        vm.fb.ref("/").child("places").push({
+          place: vm.placeSelected.place
+        });
+        vm.dialog = false;
+      },
+      removePlace(place) {
+        var vm = this;
+        vm.tourSelected = place;
+        vm.$swal({
+          title: '¿Estas seguro?',
+          text: "Si eliminar!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+          if (result.value) {
+            console.log("Eliminado");
+            vm.fb.ref("places").child(place.$key).remove();
+            vm.$swal('Eliminado!', 'Lugar eliminado.', 'success');
+            // vm.places.splice(place,1);
+          }
+        })
+      },
+      getPlaces() {
+        var vm = this;
+
+        vm.fb.ref("/").child("places").on("value", function (places) {
+          var places_ = [];
+          places.forEach(function (place) {
             var obj = place.val();
             obj.$key = place.key;
             places_.push(obj);
@@ -148,14 +143,15 @@ export default {
           vm.places = places_;
         });
 
+      }
+    },
+    mounted() {
+      var vm = this;
+      vm.getPlaces();
+    },
+    props: {
+      source: String
     }
-  },
-  mounted() {
-    var vm = this;
-    vm.getPlaces();
-  },
-  props: {
-    source: String
-  }
-};
+  };
+
 </script>

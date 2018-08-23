@@ -31,13 +31,13 @@
     <v-toolbar color="indigo" dark dense>
       <!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
       <v-toolbar-title>Configuracion</v-toolbar-title>
-        <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn v-for="(item,index) in menu" :key="index" flat @click="currentComponent = item.component">
-              {{item.title}}
-              <v-icon right dark>{{item.icon}}</v-icon>
-              </v-btn>
-          </v-toolbar-items>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-btn v-for="(item,index) in menu" :key="index" flat @click="currentComponent = item.component">
+          {{item.title}}
+          <v-icon right dark>{{item.icon}}</v-icon>
+        </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
     <keep-alive>
       <component v-bind:is="currentComponent"></component>
@@ -52,26 +52,25 @@
     data: () => ({
       drawer: null,
       currentComponent: 'admin-tour',
-        menu: [
-          {
-            component: "admin-tour",
-            title: "Tour",
-            icon: "directions_bus"
-          },
-          {
-            component: "admin-hotel",
-            title: "Hotel",
-            icon: "domain"
-          },
-          {
-            component: "admin-place",
-            title: "Lugares",
-            icon: "place"
-          }
-        ]
+      menu: [{
+          component: "admin-tour",
+          title: "Tour",
+          icon: "directions_bus"
+        },
+        {
+          component: "admin-hotel",
+          title: "Hotel",
+          icon: "domain"
+        },
+        {
+          component: "admin-place",
+          title: "Lugares",
+          icon: "place"
+        }
+      ]
     }),
     components: {
-      'admin-tour':AdminTour,
+      'admin-tour': AdminTour,
       'admin-hotel': AdminHotel,
       'admin-place': AdminPlace,
       // 'c-tour': () => ctour
@@ -81,4 +80,5 @@
     },
 
   }
+
 </script>

@@ -1,8 +1,19 @@
 <template>
   <v-layout id="parallax" justify-center style="padding-top:50px">
-      <v-flex xs12 sm6 md6>
-        <v-card class="opacity elevation-9">
-          <v-toolbar >
+    <v-flex xs12 sm6 md6>
+      <v-card class="opacity elevation-7 border_radius_10">
+        <v-toolbar dark color="info">
+          <v-btn class="elevation-7" color="grey lighten-5" icon dark @click.native="dialog = false" to="/">
+            <v-icon color="blue">keyboard_arrow_left</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn color="grey lighten-5" dark small absolute bottom right fab @click="dialog = true">
+            <v-icon color="blue">email</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <!-- <v-toolbar >
             <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn
@@ -13,152 +24,186 @@
               bottom
               right
               fab
-              @click="dialog = true"
-            >
+              @click="dialog = true">
               <v-icon>email</v-icon>
             </v-btn>
-                      
-          </v-toolbar>
-          <!-- <v-card-text style="height: 236px;" class="grey lighten-5"></v-card-text> -->
-          <v-card-text style="padding-top:25px; position: relative">
-            {{tour.description}}
-          </v-card-text>
-        </v-card>
-      </v-flex>
-
+          </v-toolbar> -->
+        <!-- <v-card-text style="height: 236px;" class="grey lighten-5"></v-card-text> -->
+        <v-card-text class="font-weight-light subheading" style="padding-top:30px; position: relative">
+          {{tour.description}}
+        </v-card-text>
+      </v-card>
+    </v-flex>
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-      <v-card>
-        <v-toolbar dark color="primary">
+      <v-card color="blue-grey darken-1" dark>
+        <v-toolbar dark color="info">
           <v-btn icon dark @click.native="dialog = false">
             <v-icon>close</v-icon>
           </v-btn>
-          <v-toolbar-title>Email</v-toolbar-title>
+          <v-toolbar-title>Cerrar</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn dark flat @click.native="dialog = false">Enviar correo</v-btn>
+            <v-btn dark flat @click.native="dialog = false">
+              Enviar
+              <v-icon class="pad-l-10">send</v-icon>
+            </v-btn>
           </v-toolbar-items>
         </v-toolbar>
+        <v-card-media height="250" :src="tour.image">
+          <!-- <v-layout align-center column justify-center pa-3>
+            <h3 class="headline">Me interesa, deseo mas informacion del tour/hotel {{tour.tour}}.</h3>
+            <span class="grey--text text--lighten-1">Para armar el mejor paquete, al mejor precio.</span>
+          </v-layout> -->
+        </v-card-media>
+        <v-form>
+          <v-container>
+            <v-layout wrap>
+              <v-flex text-xs-center>
+                <h3 class="headline">Me interesa, deseo mas informacion de {{tour.tour}}.</h3>
+                <h4 class="">Para armar el mejor paquete, al mejor precio.</h4>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field v-model="name" box color="blue-grey lighten-2" label="Nombre *"></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field v-model="email" box color="blue-grey lighten-2" label="Email *"></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field v-model="phone" box color="blue-grey lighten-2" label="Telefono (opcional)"></v-text-field>
+              </v-flex>
+              <!-- <v-flex>
+                <div class="text-xs-right">
+                  <v-btn round color="primary" dark @click="sendEmail">Enviar</v-btn>
+                </div>
+              </v-flex> -->
+            </v-layout>
+          </v-container>
+        </v-form>
         <v-divider></v-divider>
-        <v-list three-line subheader>
-          <v-subheader>General</v-subheader>
-          <v-list-tile avatar>
-            <v-list-tile-action>
-              <v-checkbox v-model="notifications"></v-checkbox>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Notifications</v-list-tile-title>
-              <v-list-tile-sub-title>Notify me about updates to apps or games that I downloaded</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile avatar>
-            <v-list-tile-action>
-              <v-checkbox v-model="widgets"></v-checkbox>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Auto-add widgets</v-list-tile-title>
-              <v-list-tile-sub-title>Automatically add home screen widgets</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
       </v-card>
     </v-dialog>
-    </v-flex>
   </v-layout>
 </template>
-
 <script>
-import firebase from "firebase";
-export default {
-  data: () => ({
-    drawer: null,
-    tour: {},
-    show: false,
-    dialog: false, //dialog
-    notifications: false,
-    sound: true,
-    widgets: false,
-    direction: "top", //buton float
-    fab: false,
-    fling: false,
-    hover: false,
-    tabs: null,
-    top: true,
-    right: false,
-    bottom: false,
-    left: false,
-    transition: "slide-y-reverse-transition"
-  }),
-  watch: {
-    top(val) {
-      this.bottom = !val;
-    },
-    right(val) {
-      this.left = !val;
-    },
-    bottom(val) {
-      this.top = !val;
-    },
-    left(val) {
-      this.right = !val;
-    }
-  },
-  methods: {
-    getTour() {
-      var vm = this;
-      var idtour = this.$route.params.id;
-      if (idtour !== "" || idtour !== undefined) {
-        firebase
-          .database()
-          .ref("tours")
-          .child(idtour)
-          .once("value", function(tour) {
-            vm.tour = tour.val();
-            var image = vm.tour.image;
-            document.body.style.backgroundImage = 
-            document.getElementById("parallax").style.backgroundImage = "url('"+image+"')";
-          });
-      } else {
-        console.log("sin datos");
+  import firebase from "firebase";
+  export default {
+    data: () => ({
+      drawer: null,
+      tour: {},
+      show: false,
+      dialog: false, //dialog
+      notifications: false,
+      sound: true,
+      widgets: false,
+      direction: "top", //buton float
+      fab: false,
+      fling: false,
+      hover: false,
+      tabs: null,
+      top: true,
+      right: false,
+      bottom: false,
+      left: false,
+      transition: "slide-y-reverse-transition",
+      name: '',
+      email: '',
+      phone: '',
+      image: 'https://cdn.vuetifyjs.com/images/cards/dark-beach.jpg'
+    }),
+    watch: {
+      top(val) {
+        this.bottom = !val;
+      },
+      right(val) {
+        this.left = !val;
+      },
+      bottom(val) {
+        this.top = !val;
+      },
+      left(val) {
+        this.right = !val;
       }
     },
-    sendMail() {
+    methods: {
+      getTour() {
+        var vm = this;
+        var idtour = this.$route.params.id;
+        if (idtour !== "" || idtour !== undefined) {
+          firebase
+            .database()
+            .ref("tours")
+            .child(idtour)
+            .once("value", function (tour) {
+              vm.tour = tour.val();
+              var image = vm.tour.image;
+              document.body.style.backgroundImage =
+                document.getElementById("parallax").style.backgroundImage = "url('" + image + "')";
+            });
+        } else {
+          console.log("sin datos");
+        }
+      },
+      sendEmail() {
+        var vm = this;
+        this.axios.post("http://localhost:3000/sendEmail", {
+            name: vm.name,
+            tour: vm.tour.tour,
+            email: vm.email,
+            phone: vm.phone
+          })
+          .then(response => {
+            console.log(response);
+          })
+          .catch(e => {
+            console.log(e);
+            // this.errors.push(e);
+          });
+      }
+    },
+    mounted() {
       var vm = this;
-      console.log("enviando correo");
-      vm.dialog = true;
-      this.axios.get('/sendMail').then((response) => {
-        console.log(response.data)
-      })
+      vm.getTour();
     }
-  },
-  mounted() {
-    var vm = this;
-    vm.getTour();
-  }
-};
+  };
+
 </script>
 
 <style>
-#create .v-speed-dial {
-  position: absolute;
-}
+  .pad-l-10 {
+    padding-left: 10px;
+  }
 
-#create .v-btn--floating {
-  position: relative;
-}
+  #create .v-speed-dial {
+    position: absolute;
+  }
 
-.opacity{
-  opacity: .8;
-}
-#parallax {
-  /* The image used */
+  #create .v-btn--floating {
+    position: relative;
+  }
 
-  /* Set a specific height */
-  height: 100vh;
+  .opacity {
+    opacity: .9;
+  }
 
-  /* Create the parallax scrolling effect */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+  #parallax {
+    /* The image used */
+    /* Set a specific height */
+    height: 100vh;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .banner_for_email {
+    height: 100vh;
+    background-size: cover;
+  }
+
+  .border_radius_10 {
+    border-radius: 5px;
+  }
+
 </style>

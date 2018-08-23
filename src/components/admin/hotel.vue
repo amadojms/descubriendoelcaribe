@@ -24,9 +24,13 @@
             <!-- <td class="text-xs-right">{{ tour.item.$key }}</td> -->
             <td class="text-xs-right">{{ tour.item.place }}</td>
             <td>
-              <v-btn small @click="editTour(tour.item)"> <v-icon small color="orange">edit</v-icon></v-btn>
-              <v-btn small @click="removeHotel(tour.item)"> <v-icon small color="red">delete</v-icon></v-btn>
-              </td> 
+              <v-btn small @click="editTour(tour.item)">
+                <v-icon small color="orange">edit</v-icon>
+              </v-btn>
+              <v-btn small @click="removeHotel(tour.item)">
+                <v-icon small color="red">delete</v-icon>
+              </v-btn>
+            </td>
             <!-- <td><v-btn @click="editTour(tour.item)"> Edit</v-btn></td> -->
           </template>
           <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -35,7 +39,6 @@
         </v-data-table>
       </v-card>
     </v-layout>
-
     <v-layout row>
       <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
         <v-card tile>
@@ -56,54 +59,20 @@
               </v-btn>
             </v-menu>
           </v-toolbar>
-          <v-card-text>          
+          <v-card-text>
             <v-form v-model="valid">
-              <v-text-field
-                v-model="tourSelected.tour"
-                :rules="nameRules"
-                :counter="50"
-                label="Nombre del tour"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="tourSelected.description"
-                :rules="descripcionRules"
-                :counter="50"
-                label="Descripcion del tour"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="tourSelected.include"
-                :rules="incluyeRules"
-                :counter="50"
-                label="Incluye"
-                required
-              ></v-text-field>
-              <v-select 
-                :items="places"
-                v-model="tourSelected.placeid"
-                item-value="$key"
-                item-text="place"
-                label="Selecciona lugar"
-                single-line
-              ></v-select>
+              <v-text-field v-model="tourSelected.tour" :rules="nameRules" :counter="50" label="Nombre del tour" required></v-text-field>
+              <v-text-field v-model="tourSelected.description" :rules="descripcionRules" :counter="50" label="Descripcion del tour" required></v-text-field>
+              <v-text-field v-model="tourSelected.include" :rules="incluyeRules" :counter="50" label="Incluye" required></v-text-field>
+              <v-select :items="places" v-model="tourSelected.placeid" item-value="$key" item-text="place" label="Selecciona lugar" single-line></v-select>
               <v-radio-group v-model="tourSelected.service">
-                <v-radio                
-                  label="Hotel"
-                  value="hotel"
-                ></v-radio>
-                <v-radio                
-                  label="Tour"
-                  value="tour"
-                ></v-radio>
-                
+                <v-radio label="Hotel" value="hotel"></v-radio>
+                <v-radio label="Tour" value="tour"></v-radio>
               </v-radio-group>
               <v-btn raised class="primary" @click="inputFileClick">Subir imagen</v-btn>
               <input type="file" ref="inputFile" accept="image/*" @change="fileChange">
               <img :src="imageUrl" alt="Foto subida">
-
             </v-form>
-
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -111,120 +80,119 @@
   </v-container>
 </template>
 <script>
-import firebase from "firebase";
-export default {
-  data() {
-    return {
-      imageUrl:'',
-      dialog: false,
-      search: "",
-      valid: false,
-      tours: [],
-      places: [],
-      files: Object,
-      fb:firebase.database(),
-      tourSelected: {
-        tour: "",
-        description: "",
-        placeid: [],
-        include: "",
-        service: "",
-        image: "",
-        radioService: "",
-        place: ""
-      },
-      nameRules: [
-        // v => !!v || "Nombre es requerido",
-        // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
-      ],
-      descripcionRules: [
-        // v => !!v || "Descripcion es requerido",
-        // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
-      ],
-      incluyeRules: [
-        // v => !!v || "Incluye es requerido",
-        // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
-      ],
+  import firebase from "firebase";
+  export default {
+    data() {
+      return {
+        imageUrl: '',
+        dialog: false,
+        search: "",
+        valid: false,
+        tours: [],
+        places: [],
+        files: Object,
+        fb: firebase.database(),
+        tourSelected: {
+          tour: "",
+          description: "",
+          placeid: [],
+          include: "",
+          service: "",
+          image: "",
+          radioService: "",
+          place: ""
+        },
+        nameRules: [
+          // v => !!v || "Nombre es requerido",
+          // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
+        ],
+        descripcionRules: [
+          // v => !!v || "Descripcion es requerido",
+          // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
+        ],
+        incluyeRules: [
+          // v => !!v || "Incluye es requerido",
+          // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
+        ],
 
-      headers: [
-        {
-          text: "Nombre",
-          // align: "left",
-          // sortable: false,
-          value: "tour"
-        },
-        {
-          text: "Descripcion",
-          value: "description"
-        },
-        // {
-        //   text: "Id Lugar",
-        //   value: "placeid"
-        // },
-        {
-          text: "Servicio",
-          value: "service"
-        },
-        {
-          text: "Incluye",
-          value: "include"
-        },
-        {
-          text: "Imagen",
-          value: "image"
-        },
-        // {
-        //   text: "Key",
-        //   value: "$key"
-        // },
-        {
-          text: "Lugar",
-          value: "place"
-        },
-        {
-          text: "Accion"
-          // value: ""
+        headers: [{
+            text: "Nombre",
+            // align: "left",
+            // sortable: false,
+            value: "tour"
+          },
+          {
+            text: "Descripcion",
+            value: "description"
+          },
+          // {
+          //   text: "Id Lugar",
+          //   value: "placeid"
+          // },
+          {
+            text: "Servicio",
+            value: "service"
+          },
+          {
+            text: "Incluye",
+            value: "include"
+          },
+          {
+            text: "Imagen",
+            value: "image"
+          },
+          // {
+          //   text: "Key",
+          //   value: "$key"
+          // },
+          {
+            text: "Lugar",
+            value: "place"
+          },
+          {
+            text: "Accion"
+            // value: ""
+          }
+        ]
+      };
+    },
+    methods: {
+      inputFileClick() {
+        var vm = this;
+        vm.$refs.inputFile.click();
+      },
+      fileChange(event) {
+        console.log(event);
+        var vm = this;
+        const files = event.target.files;
+        let filename = files[0].name;
+        console.log(files[0]);
+        if (filename.lastIndexOf('.') <= 0) {
+          return alert('Porfavor agrega una imagen valida');
         }
-      ]
-    };
-  },
-  methods: {
-    inputFileClick(){
-      var vm = this;
-      vm.$refs.inputFile.click();
-    },
-    fileChange(event){
-      console.log(event);
-      var vm = this;
-      const files = event.target.files;
-      let filename = files[0].name;
-      console.log(files[0]);
-      if(filename.lastIndexOf('.') <= 0){
-        return alert('Porfavor agrega una imagen valida');
-      }
-      const fileReader = new FileReader();
-      fileReader.addEventListener('load', () => {
-        vm.imageUrl = fileReader.result;
-        console.log(vm.imageUrl);
-      });
-      fileReader.readAsDataURL(files[0]);
-      vm.image = files[0];
-      vm.files = files;
-    },
-    editTour(tour) {
-      console.log(tour);
-      var vm = this;
-      vm.tourSelected = tour;
-      vm.dialog = true;
-    },
-    addTour(){
-      var vm = this;
-      vm.dialog = true;
-      vm.tourSelected = {};
-    },
-    saveTour(){
-      var vm = this; 
-      vm.fb.ref("/").child("tours").child(vm.idtour).update({
+        const fileReader = new FileReader();
+        fileReader.addEventListener('load', () => {
+          vm.imageUrl = fileReader.result;
+          console.log(vm.imageUrl);
+        });
+        fileReader.readAsDataURL(files[0]);
+        vm.image = files[0];
+        vm.files = files;
+      },
+      editTour(tour) {
+        console.log(tour);
+        var vm = this;
+        vm.tourSelected = tour;
+        vm.dialog = true;
+      },
+      addTour() {
+        var vm = this;
+        vm.dialog = true;
+        vm.tourSelected = {};
+      },
+      saveTour() {
+        var vm = this;
+        vm.fb.ref("/").child("tours").child(vm.idtour).update({
           //image: form.image_url,
           description: vm.tourSelected.description,
           include: vm.tourSelected.include,
@@ -232,16 +200,16 @@ export default {
           placeid: vm.tourSelected.placeid,
           service: vm.tourSelected.service
         });
-    },
-    createTour(tour) {
-      console.log(tour);
-      var vm = this;
+      },
+      createTour(tour) {
+        console.log(tour);
+        var vm = this;
         var file = vm.files[0];
         var metadata = {
           contentType: 'image/jpeg',
         };
         console.log(file);
-        if(file !== undefined){
+        if (file !== undefined) {
           var storageRef = firebase.storage().ref();
           var uploadTask = storageRef.child('tours/' + file.name).put(file, metadata);
           uploadTask.on('state_changed', function (snapshot) {
@@ -250,7 +218,7 @@ export default {
             // Handle unsuccessful uploads
           }, function () {
             // Handle successful uploads on complete
-            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
               console.log('File available at', downloadURL);
               // var downloadURL = downloadURL;
               firebase.database().ref("/").child("tours").push({
@@ -276,52 +244,52 @@ export default {
             // });
             // vm.$.toast.open();
           });
-        }else{
-              firebase.database().ref("/").child("tours").push({
-                // image: downloadURL,
-                description: vm.tourSelected.description,
-                tour: vm.tourSelected.tour,
-                include: vm.tourSelected.include,
-                placeid: vm.tourSelected.placeid,
-                service: vm.tourSelected.service,
-              });
-              vm.dialog = false;
+        } else {
+          firebase.database().ref("/").child("tours").push({
+            // image: downloadURL,
+            description: vm.tourSelected.description,
+            tour: vm.tourSelected.tour,
+            include: vm.tourSelected.include,
+            placeid: vm.tourSelected.placeid,
+            service: vm.tourSelected.service,
+          });
+          vm.dialog = false;
         }
-        
-    },
-    removeHotel(hotel) {
-      console.log(hotel);
-      var vm = this;
-      vm.tourSelected = hotel;
-      vm.$swal({
-        title: '¿Estas seguro?',
-        text: "Si eliminar!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, eliminar!'
-      }).then((result) => {
-        if (result.value) {
-          console.log("Eliminado");
-          vm.fb.ref("/").child("tours").child(hotel.$key).remove();
-          vm.$swal('Eliminado!','Lugar eliminado.','success');
-          // vm.places.splice(place,1);
-        }
-      })
-      
-    },
-    changeTourStatus(tour) {
-      console.log(tour);
-      var vm = this;
-      vm.tourSelected = tour;
-      vm.dialog = true;
-    },
-    getPlaces() {
-      var vm = this;
-      var places_ = [];
-      vm.fb.ref("places").on("value", function(places) {
-          places.forEach(function(place) {
+
+      },
+      removeHotel(hotel) {
+        console.log(hotel);
+        var vm = this;
+        vm.tourSelected = hotel;
+        vm.$swal({
+          title: '¿Estas seguro?',
+          text: "Si eliminar!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+          if (result.value) {
+            console.log("Eliminado");
+            vm.fb.ref("/").child("tours").child(hotel.$key).remove();
+            vm.$swal('Eliminado!', 'Lugar eliminado.', 'success');
+            // vm.places.splice(place,1);
+          }
+        })
+
+      },
+      changeTourStatus(tour) {
+        console.log(tour);
+        var vm = this;
+        vm.tourSelected = tour;
+        vm.dialog = true;
+      },
+      getPlaces() {
+        var vm = this;
+        var places_ = [];
+        vm.fb.ref("places").on("value", function (places) {
+          places.forEach(function (place) {
             var obj = place.val();
             obj.$key = place.key;
             places_.push(obj);
@@ -330,19 +298,19 @@ export default {
           console.log(vm.places);
         });
 
-    },
-    getTours() {
-      var vm = this;
-      firebase
-        .database().ref("tours").orderByChild("service").equalTo("hotel").on("value", function(snapshot) {
-          var tours = [];
-          var num = snapshot.numChildren();
-          var cont = 0;
-          snapshot.forEach(function(child) {
-            if (child.val().image !== "") {
-              var obj = child.val();
-              if (obj.placeid !== undefined) {
-                firebase.database().ref("places").child(obj.placeid).on("value", function(place) {
+      },
+      getTours() {
+        var vm = this;
+        firebase
+          .database().ref("tours").orderByChild("service").equalTo("hotel").on("value", function (snapshot) {
+            var tours = [];
+            var num = snapshot.numChildren();
+            var cont = 0;
+            snapshot.forEach(function (child) {
+              if (child.val().image !== "") {
+                var obj = child.val();
+                if (obj.placeid !== undefined) {
+                  firebase.database().ref("places").child(obj.placeid).on("value", function (place) {
                     obj.place = place.val().place;
                     obj.$key = child.key;
                     tours.push(obj);
@@ -351,27 +319,28 @@ export default {
                       vm.tours = tours;
                     }
                   });
-              } else {
-                obj.$key = child.key;
-                tours.push(obj);
-                cont++;
-                if (num == cont) {
-                  vm.tours = tours;
+                } else {
+                  obj.$key = child.key;
+                  tours.push(obj);
+                  cont++;
+                  if (num == cont) {
+                    vm.tours = tours;
+                  }
                 }
               }
-            }
+            });
           });
-        });
+      }
+    },
+    mounted() {
+      var vm = this;
+      console.log("mounted ok");
+      vm.getPlaces();
+      vm.getTours();
+    },
+    props: {
+      source: String
     }
-  },
-  mounted() {
-    var vm = this;
-    console.log("mounted ok");
-    vm.getPlaces();
-    vm.getTours();
-  },
-  props: {
-    source: String
-  }
-};
+  };
+
 </script>
