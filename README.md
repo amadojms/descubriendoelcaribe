@@ -1,4 +1,4 @@
-# dec
+# Descubriendo el caribe - Pagina de tours (ventas proximamente)
 
 > tours cancun los mejores
 
