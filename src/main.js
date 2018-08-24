@@ -20,19 +20,19 @@ Vue.config.productionTip = false
  }
  */
 router.beforeEach((to, from, next) => {
-  // console.log("entro aqui",to);
   const currentUser = firebase.auth().currentUser;
+  console.log("entro aqui",to,currentUser);
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  console.log(requiresAuth);
-  if (requiresAuth && !currentUser) {
+  // console.log(requiresAuth);
+  if (requiresAuth && currentUser) {
     console.log("entro aqui 2");
-    next('/');
-  } else if (requiresAuth && currentUser) {
+    next('');
+  } else if (requiresAuth && !currentUser) {
     console.log("entro aqui 3");
-    next("/admin");
+    next('/sig-in');
   } else if (to.matched.length == 0) {
       console.log("entro aqui 555", to.matched.length)
-       next('/contacto');
+       next();
   }
 });
 
