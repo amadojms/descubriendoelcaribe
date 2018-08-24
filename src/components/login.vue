@@ -64,6 +64,8 @@
         firebase.auth().signInWithEmailAndPassword(vm.email, vm.password).then(function (firebaseUser) {
             vm.process = false;
             console.log(firebaseUser);
+            localStorage.setItem("User",JSON.stringify(firebaseUser.user));
+            localStorage.setItem("Uid",JSON.stringify(firebaseUser.uid));
           })
           .catch(function (error) {
             vm.process = false;

@@ -65,6 +65,7 @@
         clipped: false,
         drawer: false,
         fixed: false,
+        uid:'',
         icons: [
           "fab fa-facebook",
           "fab fa-twitter",
@@ -87,11 +88,11 @@
             title: "Contacto",
             icon: "person"
           },
-          // {
-          //   url: "/admin",
-          //   title: "Config",
-          //   icon: "settings"
-          // },
+          {
+            url: "/admin",
+            title: "Config",
+            icon: "settings"
+          },
           // {
           //   url: "/login",
           //   title: "Login",
@@ -105,7 +106,21 @@
       };
     },
     name: "App",
-    methods: {}
+    computed: {
+      uid_change(){
+        return this.uid;
+      }
+    },
+    methods: {
+      userLogged(){
+        var vm = this;
+        JSON.stringify(localStorage.getItem("User"));
+        vm.uid = JSON.stringify(localStorage.getItem("Uid"));
+      }
+    },
+    mounted(){
+      
+    }
   };
 
 </script>

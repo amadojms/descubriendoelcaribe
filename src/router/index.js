@@ -38,7 +38,10 @@ export default new Router({
     {
       path: '/admin',
       // name: 'hotels',
-      component: admin_index
+      component: admin_index,
+      meta: {
+        requiresAuth: true
+      }
     },
     // {
     //   path: '/admin/tours',

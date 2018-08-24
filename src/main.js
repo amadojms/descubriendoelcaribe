@@ -8,10 +8,34 @@ import firebase from 'firebase'
 import VueSweetalert2 from 'vue-sweetalert2';
 import axios from 'axios';
 import VueAxios from 'vue-axios'
+import Vuex from 'vuex'
 import 'vuetify/dist/vuetify.min.css'
 
 
 Vue.config.productionTip = false
+/**
+ *
+ if (!to.matched.length) {
+   next('/notFound');
+ }
+ */
+router.beforeEach((to, from, next) => {
+  // console.log("entro aqui",to);
+  const currentUser = firebase.auth().currentUser;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  console.log(requiresAuth);
+  if (requiresAuth && !currentUser) {
+    console.log("entro aqui 2");
+    next('/');
+  } else if (requiresAuth && currentUser) {
+    console.log("entro aqui 3");
+    next("/admin");
+  } else if (to.matched.length == 0) {
+      console.log("entro aqui 555", to.matched.length)
+       next('/contacto');
+  }
+});
+
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyDGxeLHv3_jcfKxUh5PQPL8ESZm282v8nY",
@@ -24,6 +48,7 @@ var config = {
 firebase.initializeApp(config);
 Vue.use(VueAxios, axios);
 Vue.use(VueSweetalert2);
+Vue.use(Vuex);
 Vue.use(Vuetify, { theme: {
   primary: '#4785f5',
   secondary: '#424242',
