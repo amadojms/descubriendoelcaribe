@@ -19,22 +19,22 @@ Vue.config.productionTip = false
    next('/notFound');
  }
  */
-router.beforeEach((to, from, next) => {
-  const currentUser = firebase.auth().currentUser;
-  console.log("entro aqui",to,currentUser);
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  // console.log(requiresAuth);
-  if (requiresAuth && currentUser) {
-    console.log("entro aqui 2");
-    next('');
-  } else if (requiresAuth && !currentUser) {
-    console.log("entro aqui 3");
-    next('/sig-in');
-  } else if (to.matched.length == 0) {
-      console.log("entro aqui 555", to.matched.length)
-       next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   const currentUser = firebase.auth().currentUser;
+//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+//   console.log(currentUser,requiresAuth,to);
+//   // console.log(requiresAuth);
+//   if (requiresAuth && currentUser) {
+//     console.log("entro aqui 2");
+//       next('');
+//   } else if (requiresAuth && !currentUser) {
+//     console.log("entro aqui 3");
+//     next('/login');
+//   } else if (to.matched.length == 0) {
+//       console.log("entro aqui 555", to.matched.length)
+//        next();
+//   }
+// });
 
 // Initialize Firebase
 var config = {
