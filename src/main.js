@@ -19,22 +19,26 @@ Vue.config.productionTip = false
    next('/notFound');
  }
  */
-// router.beforeEach((to, from, next) => {
-//   const currentUser = firebase.auth().currentUser;
-//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-//   console.log(currentUser,requiresAuth,to);
-//   // console.log(requiresAuth);
-//   if (requiresAuth && currentUser) {
-//     console.log("entro aqui 2");
-//       next('');
-//   } else if (requiresAuth && !currentUser) {
-//     console.log("entro aqui 3");
-//     next('/login');
-//   } else if (to.matched.length == 0) {
-//       console.log("entro aqui 555", to.matched.length)
-//        next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  const currentUser = firebase.auth().currentUser;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  // console.log(currentUser,requiresAuth,to,from);
+  // console.log(from);
+  // console.log(requiresAuth);
+  if (requiresAuth && currentUser !== null) {
+    console.log("entro aqui 2", currentUser, requiresAuth);
+      // next('');
+      next();
+  } else if(!requiresAuth && currentUser == null && from.to == '/admin'){
+      console.log("1", from)
+      // console.log("entro aqui 555", to.matched.length)
+      // next(from.path);
+      next('/login');
+  }else{
+    console.log("else vue route");
+    next();
+  }
+});
 
 // Initialize Firebase
 var config = {

@@ -1,6 +1,6 @@
 <template>
-  <v-card color="blue-grey darken-1" dark>
-    <v-card-media height="200" src="https://cdn.vuetifyjs.com/images/cards/dark-beach.jpg">
+  <v-card>
+    <v-card-media height="200" src="../static/img/banner_contacto.jpg">
       <!-- <v-flex xs12>
           <v-progress-linear
             :active="isUpdating"
@@ -10,9 +10,9 @@
             indeterminate
           ></v-progress-linear>
         </v-flex> -->
-      <v-layout align-start column justify-end pa-3>
-        <h3 class="headline">Contactanos</h3>
-        <span class="grey--text text--lighten-1">Para armar el mejor paquete, al mejor precio.</span>
+      <v-layout align-center column justify-center pa-3>
+        <h3 class="display-1 white--text">Contactanos</h3>
+        <span class="red--text text--lighten-1 font-weight-medium">Para armar el mejor paquete, al mejor precio.</span>
       </v-layout>
     </v-card-media>
     <v-form>
@@ -45,14 +45,6 @@
   } from "firebase";
   export default {
     data() {
-      let srcs = {
-        1: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-        2: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-        3: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-        4: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
-        5: "https://cdn.vuetifyjs.com/images/lists/5.jpg"
-      };
-
       return {
         name: "",
         email: "",
@@ -60,14 +52,6 @@
         // isUpdating:false
       };
     },
-
-    // watch: {
-    //   isUpdating(val) {
-    //     if (val) {
-    //       setTimeout(() => (this.isUpdating = false), 3000);
-    //     }
-    //   }
-    // },
     methods: {
       sendEmail() {
         var vm = this;
@@ -78,6 +62,9 @@
           })
           .then(response => {
             console.log(response);
+            if(response.status){
+              
+            }
           })
           .catch(e => {
             console.log(e);

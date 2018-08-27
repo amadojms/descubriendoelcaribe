@@ -3,7 +3,6 @@
     <v-layout row>
       <v-flex sm12>
         <v-text-field id="search_tour" name="in_tour" label="Busca un tour" single-line prepend-icon="search" solo v-model="filter"></v-text-field>
-        <!-- suffix="Ingresa texto para una busqueda" -->
       </v-flex>
     </v-layout>
     <v-layout justify-center>
@@ -11,8 +10,8 @@
         <div class="display-1 font-weight-thin">Los mejores Tours de Cancun y CDMX</div>
       </v-flex>
     </v-layout>
-    <v-container grid-list-md text-xs-center>
-      <v-flex>
+    <!-- <v-container grid-list-md > -->
+      <v-flex text-xs-center>
         <div class="justify-center">
           <v-progress-circular v-if="spinner" indeterminate color="primary"></v-progress-circular>
         </div>
@@ -34,7 +33,7 @@
           </a>
         </v-flex>
       </v-layout>
-    </v-container>
+    <!-- </v-container> -->
   </v-container>
 </template>
 

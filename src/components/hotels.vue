@@ -9,7 +9,12 @@
       <v-flex class="xs12 sm12 pad-15">
         <div class="display-1 font-weight-thin">Los mejores Hoteles de Cancun y CDMX</div>
       </v-flex>
-      <v-progress-circular v-if="spinner" indeterminate color="primary"></v-progress-circular>
+      <v-flex text-xs-center>
+        <div class="justify-center">
+          <v-progress-circular v-if="spinner" indeterminate color="primary"></v-progress-circular>
+        </div>
+      </v-flex>
+      <!-- <v-progress-circular v-if="spinner" indeterminate color="primary"></v-progress-circular> -->
     </v-layout>
     <v-layout row wrap>
       <v-flex v-for="hotel in filteredHotels" :key="hotel.key" xs12 sm6 md4>

@@ -8,7 +8,8 @@
           </v-btn>
           <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn color="grey lighten-5" dark small absolute bottom right fab @click="dialog = true">
+          <!-- <v-btn color="grey lighten-5" dark small absolute bottom right fab @click="dialog = true"> -->
+          <v-btn color="grey lighten-5" icon dark right absolute @click="dialog = true">
             <v-icon color="blue">email</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
@@ -35,7 +36,7 @@
       </v-card>
     </v-flex>
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-      <v-card color="blue-grey darken-1" dark>
+      <v-card  dark>
         <v-toolbar dark color="info">
           <v-btn icon dark @click.native="dialog = false">
             <v-icon>close</v-icon>
