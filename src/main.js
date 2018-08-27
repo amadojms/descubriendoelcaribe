@@ -29,13 +29,13 @@ router.beforeEach((to, from, next) => {
     console.log("entro aqui 2", currentUser, requiresAuth);
       // next('');
       next();
-  } else if(!requiresAuth && currentUser == null && from.to == '/admin'){
+  } else if(requiresAuth == false && currentUser == null && to.path == '/admin'){
       console.log("1", from)
       // console.log("entro aqui 555", to.matched.length)
       // next(from.path);
       next('/login');
   }else{
-    console.log("else vue route");
+    console.log("else vue route", to.path);
     next();
   }
 });
