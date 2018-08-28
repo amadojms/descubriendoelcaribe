@@ -63,6 +63,7 @@
 </template>
 
 <script>
+  import firebase from "firebase";
   export default {
     data() {
       return {
@@ -99,6 +100,11 @@
             icon: "settings"
           },
           // {
+          //   url: "/logout",
+          //   title: "Logout",
+          //   icon: "settings"
+          // }
+          // {
           //   url: "/login",
           //   title: "Login",
           //   icon: "account_circle"
@@ -121,6 +127,16 @@
         var vm = this;
         JSON.stringify(localStorage.getItem("User"));
         vm.uid = JSON.stringify(localStorage.getItem("Uid"));
+      },
+      logout(){
+        firebase.auth().signOut()
+        .then(function() {
+          console.log("cerrar sesion");
+          localStorage.removeItem("Uid");
+        })
+        .catch(function(error) {
+          // An error happened
+        });
       }
     },
     mounted(){
