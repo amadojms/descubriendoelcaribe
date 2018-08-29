@@ -26,6 +26,16 @@
               <div class="font-weight-thin">{{tab.title}}</div>
               <v-icon right dark>{{tab.icon}}</v-icon>
             </v-btn>
+            <template>
+              <v-btn flat to="/admin">
+                <div class="font-weight-thin">Config</div>
+                <v-icon right dark>settings</v-icon>
+              </v-btn>
+              <v-btn @click="logout" flat>
+                <div class="font-weight-thin">Logout</div>
+                <v-icon right dark>power_settings_new</v-icon>
+              </v-btn>
+            </template>
             <!-- <router-link  v-for="tab in tabs" :key="tab.url" class="no_link" :to="tab.url" ><v-btn flat>{{ tab.title }}</v-btn></router-link> -->
             <!-- <v-tabs v-model="active" color="white" dark slider-color="blue">
             <v-tab  v-for="tab in tabs" :key="tab.url" ripple @click="tab.url = tab.url">
@@ -94,14 +104,9 @@
             title: "Contacto",
             icon: "person"
           },
-          {
-            url: "/admin",
-            title: "Config",
-            icon: "settings"
-          },
           // {
-          //   url: "/logout",
-          //   title: "Logout",
+          //   url: "/admin",
+          //   title: "Config",
           //   icon: "settings"
           // }
           // {
@@ -136,6 +141,7 @@
         })
         .catch(function(error) {
           // An error happened
+          console.log(error);
         });
       }
     },
