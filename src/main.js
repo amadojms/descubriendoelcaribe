@@ -9,16 +9,12 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import axios from 'axios';
 import VueAxios from 'vue-axios'
 import Vuex from 'vuex'
+import Spinner from '@/components/spinner'
 import 'vuetify/dist/vuetify.min.css'
 
 
 Vue.config.productionTip = false
-/**
- *
- if (!to.matched.length) {
-   next('/notFound');
- }
- */
+
 router.beforeEach((to, from, next) => {
   // const currentUser = firebase.auth().currentUser;
   var uid = localStorage.getItem("Uid")
@@ -51,6 +47,7 @@ firebase.initializeApp(config);
 Vue.use(VueAxios, axios);
 Vue.use(VueSweetalert2);
 Vue.use(Vuex);
+Vue.use(Spinner);
 Vue.use(Vuetify, { theme: {
   primary: '#4785f5',
   secondary: '#424242',
@@ -66,6 +63,6 @@ Vue.use(Vuetify, { theme: {
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: { App, Spinner },
   template: '<App/>'
 })

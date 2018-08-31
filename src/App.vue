@@ -27,11 +27,11 @@
               <v-icon right dark>{{tab.icon}}</v-icon>
             </v-btn>
             <template>
-              <v-btn flat to="/admin">
+              <v-btn if="auth" flat to="/admin">
                 <div class="font-weight-thin">Config</div>
                 <v-icon right dark>settings</v-icon>
               </v-btn>
-              <v-btn @click="logout" flat>
+              <v-btn if="auth" @click="logout" flat>
                 <div class="font-weight-thin">Logout</div>
                 <v-icon right dark>power_settings_new</v-icon>
               </v-btn>
@@ -134,13 +134,17 @@
         vm.uid = JSON.stringify(localStorage.getItem("Uid"));
       },
       logout(){
+        var vm = this;
+        
         firebase.auth().signOut()
         .then(function() {
-          console.log("cerrar sesion");
+          console.log("sesion cerrada");
           localStorage.removeItem("Uid");
+          vm.$router.push({path:'/login'});
         })
         .catch(function(error) {
           // An error happened
+          
           console.log(error);
         });
       }

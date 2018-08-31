@@ -47,8 +47,8 @@
   export default {
     data: () => ({
       drawer: null,
-      email: "",
-      password: "",
+      email: "amadojms@gmail.com",
+      password: "123456",
       process: false,
       dialog: false,
       error: {}
@@ -59,22 +59,22 @@
     methods: {
       login() {
         var vm = this;
-        console.log(vm.email, vm.password);
+        console.log(vm.email, vm.password,window.location);
         vm.process = true;
+        
         firebase.auth().signInWithEmailAndPassword(vm.email, vm.password).then(function (firebaseUser) {
             vm.process = false;
-            console.log(firebaseUser);
+            // console.log(firebaseUser);
             localStorage.setItem("User",JSON.stringify(firebaseUser.user));
             localStorage.setItem("Uid",firebaseUser.user.uid);
-            window.location = '/admin';
+            // window.location = '/admin';
+            vm.$router.push({path:'/admin'});
           })
           .catch(function (error) {
             vm.process = false;
             vm.error = error;
             vm.dialog = true;
             console.log(error);
-            // vm.toastMsg = "Error al iniciar sesion "+ errorMessage;
-            // vm.$.toast.open();
           });
       }
     }

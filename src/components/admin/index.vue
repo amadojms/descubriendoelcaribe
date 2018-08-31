@@ -40,7 +40,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <keep-alive>
-      <component v-bind:is="currentComponent"></component>
+      <component :is="currentComponent"></component>
     </keep-alive>
   </v-app>
 </template>

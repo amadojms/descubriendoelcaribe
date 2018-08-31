@@ -4,8 +4,8 @@
       <v-spacer></v-spacer>
       <v-btn color="primary" dark @click="addTour">Agregar</v-btn>
     </v-layout>
-    <v-layout justify-center>
-      <v-card>
+    <v-layout justify-center >
+      <v-card >
         <v-card-title>
           <h3>Listado de tours</h3>
           <v-spacer></v-spacer>
@@ -70,8 +70,12 @@
                 <v-radio label="Tour" value="tour"></v-radio>
               </v-radio-group>
               <v-btn raised class="primary" @click="inputFileClick">Subir imagen</v-btn>
-              <input type="file" ref="inputFile" accept="image/*" @change="fileChange">
-              <img :src="imageUrl" alt="Foto subida">
+              <template class="hide">
+                   <input class="hide" type="file" ref="inputFile" accept="image/*" @change="fileChange">
+              </template>
+              <v-flex justify-center>
+                <img class="size" :src="imageUrl.length > 0 ? imageUrl : '/static/img/producto_sin_imagen.png'" alt="Foto subida">
+              </v-flex>
             </v-form>
           </v-card-text>
         </v-card>
@@ -158,7 +162,7 @@
         const files = event.target.files;
         let filename = files[0].name;
         if (filename.lastIndexOf('.') <= 0) {
-          return alert('Porfavor agrega una imagen valida');
+          return vm.$swal('Porfavor agrega una imagen valida');
         }
         const fileReader = new FileReader();
         fileReader.addEventListener('load', () => {
@@ -330,3 +334,14 @@
   };
 
 </script>
+<style>
+.hide{
+  display: none;
+}
+
+.size{
+  width: 150px;
+  height: 150px;
+}
+</style>
+
