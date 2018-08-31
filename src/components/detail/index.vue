@@ -1,6 +1,6 @@
 <template>
   <v-layout id="parallax" justify-center style="padding-top:50px">
-    <v-flex xs12 sm6 md6>
+    <v-flex xs12 sm12 md12 lg9>
       <v-card class="opacity elevation-7 border_radius_10">
         <v-toolbar dark color="info">
           <v-btn class="elevation-7" color="grey lighten-5" icon dark @click.native="dialog = false" to="/">
@@ -36,15 +36,15 @@
       </v-card>
     </v-flex>
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-      <v-card  dark>
-        <v-toolbar dark color="info">
-          <v-btn icon dark @click.native="dialog = false">
+      <v-card >
+        <v-toolbar fixed color="white">
+          <v-btn flat @click.native="dialog = false">
             <v-icon>close</v-icon>
           </v-btn>
-          <v-toolbar-title>Cerrar</v-toolbar-title>
+          <v-toolbar-title color="#FFF">Correo</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn dark flat @click.native="dialog = false">
+            <v-btn  flat @click.native="dialog = false">
               Enviar
               <v-icon class="pad-l-10">send</v-icon>
             </v-btn>
