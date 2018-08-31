@@ -20,19 +20,17 @@ Vue.config.productionTip = false
  }
  */
 router.beforeEach((to, from, next) => {
-  const currentUser = firebase.auth().currentUser;
+  // const currentUser = firebase.auth().currentUser;
+  var uid = localStorage.getItem("Uid")
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   // console.log(currentUser,requiresAuth,to,from);
   // console.log(from);
-  // console.log(requiresAuth);
-  if (requiresAuth && currentUser !== null) {
-    console.log("entro aqui 2", currentUser, requiresAuth);
-      // next('');
+  console.log(requiresAuth, uid);
+  if (requiresAuth && uid !== null) {
+    console.log("entro aqui 2", uid, requiresAuth);
       next();
-  } else if(requiresAuth == false && currentUser == null && to.path == '/admin'){
+  } else if (requiresAuth == true && uid == null && to.path == '/admin') {
       console.log("1", from)
-      // console.log("entro aqui 555", to.matched.length)
-      // next(from.path);
       next('/login');
   }else{
     console.log("else vue route", to.path);

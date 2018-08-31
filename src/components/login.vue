@@ -65,7 +65,8 @@
             vm.process = false;
             console.log(firebaseUser);
             localStorage.setItem("User",JSON.stringify(firebaseUser.user));
-            localStorage.setItem("Uid",JSON.stringify(firebaseUser.uid));
+            localStorage.setItem("Uid",firebaseUser.user.uid);
+            window.location = '/admin';
           })
           .catch(function (error) {
             vm.process = false;
