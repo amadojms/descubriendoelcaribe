@@ -8,7 +8,9 @@ import firebase from 'firebase'
 import VueSweetalert2 from 'vue-sweetalert2';
 import axios from 'axios';
 import VueAxios from 'vue-axios'
-import Vuex from 'vuex'
+// import velocity from 'velocity-animate'
+// import Vuex from 'vuex'
+import { store } from './store'
 import Spinner from '@/components/spinner'
 import 'vuetify/dist/vuetify.min.css'
 
@@ -46,7 +48,8 @@ var config = {
 firebase.initializeApp(config);
 Vue.use(VueAxios, axios);
 Vue.use(VueSweetalert2);
-Vue.use(Vuex);
+// Vue.use(velocity);
+// Vue.use(Vuex);
 Vue.use(Spinner);
 Vue.use(Vuetify, { theme: {
   primary: '#4785f5',
@@ -63,6 +66,7 @@ Vue.use(Vuetify, { theme: {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App, Spinner },
   template: '<App/>'
 })

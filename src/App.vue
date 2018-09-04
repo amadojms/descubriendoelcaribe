@@ -133,6 +133,15 @@
         JSON.stringify(localStorage.getItem("User"));
         vm.uid = JSON.stringify(localStorage.getItem("Uid"));
       },
+      OnAuth(){
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            console.log("el usuario esta loguado");
+          } else {
+            console.log("El usuario no esta logueado");
+          }
+        });
+      },
       logout(){
         var vm = this;
         
@@ -141,6 +150,7 @@
           console.log("sesion cerrada");
           localStorage.removeItem("Uid");
           vm.$router.push({path:'/login'});
+          vm.logout = true;
         })
         .catch(function(error) {
           // An error happened
@@ -150,7 +160,8 @@
       }
     },
     mounted(){
-      
+      var vm = this;
+      vm.OnAuth();
     }
   };
 

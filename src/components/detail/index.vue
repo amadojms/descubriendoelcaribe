@@ -3,9 +3,16 @@
     <v-flex xs12 sm12 md12 lg9>
       <v-card class="opacity elevation-7 border_radius_10">
         <v-toolbar dark color="info">
-          <v-btn class="elevation-7" color="grey lighten-5" icon dark @click.native="dialog = false" to="/">
-            <v-icon color="blue">keyboard_arrow_left</v-icon>
-          </v-btn>
+          <template v-if="tour.service == 'hotel'" >
+            <v-btn class="elevation-7" color="grey lighten-5" icon dark to="/hotels">
+              <v-icon color="blue">keyboard_arrow_left</v-icon>
+            </v-btn>
+          </template>
+          <template v-else>
+            <v-btn class="elevation-7" color="grey lighten-5" icon dark to="/">
+              <v-icon color="blue">keyboard_arrow_left</v-icon>
+            </v-btn>
+          </template>
           <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <!-- <v-btn color="grey lighten-5" dark small absolute bottom right fab @click="dialog = true"> -->
@@ -136,9 +143,9 @@
             .child(idtour)
             .once("value", function (tour) {
               vm.tour = tour.val();
+              console.log(tour.val());
               var image = vm.tour.image;
-              document.body.style.backgroundImage =
-                document.getElementById("parallax").style.backgroundImage = "url('" + image + "')";
+              document.body.style.backgroundImage = document.getElementById("parallax").style.backgroundImage = "url('" + image + "')";
             });
         } else {
           console.log("sin datos");

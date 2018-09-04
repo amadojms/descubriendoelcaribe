@@ -2,7 +2,7 @@
   <v-container grid-list-md text-xs-center>
     <v-layout row>
       <v-flex sm12>
-        <v-text-field id="search_tour" name="in_tour" label="Busca un hotel" single-line prepend-icon="search" solo v-model="filtro"></v-text-field>
+        <v-text-field id="search_tour" name="in_tour" label="Busca un hotel" single-line prepend-icon="search" solo v-model="filter"></v-text-field>
       </v-flex>
     </v-layout>
     <v-layout justify-center>
@@ -41,7 +41,7 @@
       return {
         hotels: [],
         db: Object,
-        filtro: "",
+        filter: "",
         spinner: false
       }
     },
@@ -49,7 +49,8 @@
       filteredHotels() {
         var vm = this;
         return vm.hotels.filter((item) => {
-          return item.tour !== undefined ? item.tour.match(vm.filtro) : []
+          return item.tour !== undefined ? item.tour.toLowerCase().match(vm.filter.toLowerCase()) :[];
+          // return item.tour !== undefined ? item.tour.toLowerCase().match(vm.filter.toLowerCase()) : [];
         })
       },
     },
