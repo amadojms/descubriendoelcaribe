@@ -26,7 +26,7 @@
               <div class="font-weight-thin">{{tab.title}}</div>
               <v-icon right dark>{{tab.icon}}</v-icon>
             </v-btn>
-            <template>
+            <template v-if="login">
               <v-btn if="auth" flat to="/admin">
                 <div class="font-weight-thin">Config</div>
                 <v-icon right dark>settings</v-icon>
@@ -118,7 +118,8 @@
         miniVariant: false,
         right: true,
         rightDrawer: false,
-        title: "Descubriendo el caribe"
+        title: "Descubriendo el caribe",
+        login:false
       };
     },
     name: "App",
@@ -158,7 +159,7 @@
 <style>
   .fade-enter-active,
   .fade-leave-active {
-    transition-duration: 0.4s;
+    transition-duration: 0.2s;
     transition-property: opacity;
     transition-timing-function: ease;
   }
