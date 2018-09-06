@@ -53,20 +53,19 @@ app.post('/sendEmail', function (req, res) {
   transporter.sendMail(mailOptions, function (err, info) {
     if (err){
       var response = {
-        code:1,
-        message:"Mensaje ha sido enviado",
+        status:false,
+        message:"Mensaje no se ha podido enviar, te contactaremos de todos modos.",
         error: err
       };
       res.send(response);
     }else{
       var response = {
-        code:0,
+        status:true,
         message:"Mensaje ha sido enviado",
         info:info
       };
       res.send(response);
     }
-     
   });
 });
 

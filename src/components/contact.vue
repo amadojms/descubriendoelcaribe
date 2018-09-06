@@ -39,10 +39,7 @@
   </v-card>
 </template>
 <script>
-  // import axios from "axios";
-  import {
-    messaging
-  } from "firebase";
+  import firebase from "firebase";
   export default {
     data() {
       return {
@@ -68,6 +65,7 @@
           })
           .catch(e => {
             console.log(e);
+            
             // this.errors.push(e);
           });
       }
