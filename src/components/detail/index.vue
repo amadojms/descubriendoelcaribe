@@ -1,6 +1,6 @@
 <template>
   <v-layout id="parallax" justify-center style="padding-top:50px">
-    <v-flex xs12 sm12 md12 lg9>
+    <v-flex xs11 sm11 md11 lg10>
       <v-card class="opacity elevation-7 border_radius_10">
         <v-toolbar dark color="info">
           <template v-if="tour.service == 'hotel'" >

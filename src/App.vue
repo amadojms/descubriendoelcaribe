@@ -2,7 +2,7 @@
 </style>
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" fixed app>
+    <v-navigation-drawer  v-model="drawer" fixed app>
       <v-list dense>
         <v-list-tile v-for="(tab, index) in tabs" :key="index" :to="tab.url">
           <v-list-tile-action>
@@ -17,7 +17,7 @@
     <template>
       <div>
         <v-toolbar color="primary" dense dark flat tabs app fixed>
-          <v-toolbar-side-icon class="hidden-xl-only hidden-md-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+          <v-toolbar-side-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
           <v-toolbar-title v-text="title"></v-toolbar-title>
           <!-- <div v-text="title"></div> -->
           <v-spacer></v-spacer>

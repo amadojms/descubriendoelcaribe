@@ -17,9 +17,8 @@
         </div>
       </v-flex>
       <v-layout row wrap>
-        <v-flex v-for="tour in filteredTours" :key="tour.$key" xs12 sm6 md4 lg3>
-          <a>
-            <v-card class="xs-0 pointer elevation-9" :to="'/detail/'+tour.$key">
+        <v-flex v-for="tour in filteredTours" :key="tour.$key" xs12 sm6 md6 lg4>
+            <v-card class="xs-0 pointer elevation-9 margin-card" :to="'/detail/'+tour.$key" >
               <v-card-media class="white--text" height="300px" :src="tour.image">
                 <v-container fill-height fluid>
                   <v-layout fill-height>
@@ -30,7 +29,6 @@
                 </v-container>
               </v-card-media>
             </v-card>
-          </a>
         </v-flex>
       </v-layout>
     <!-- </v-container> -->
@@ -124,6 +122,14 @@
 
   a {
     text-decoration: none;
+  }
+
+  .pad-b{
+    padding-bottom: 15px;
+  }
+  
+  .margin-card{
+    margin:10px;
   }
 
 </style>
