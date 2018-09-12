@@ -124,9 +124,9 @@
     },
     name: "App",
     computed: {
-      uid_change(){
-        return this.uid;
-      }
+      // uid_change(){
+      //   return this.uid;
+      // }
     },
     methods: {
       userLogged(){
@@ -135,33 +135,39 @@
         vm.uid = JSON.stringify(localStorage.getItem("Uid"));
       },
       OnAuth(){
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            console.log("el usuario esta loguado");
-          } else {
-            console.log("El usuario no esta logueado");
-          }
-        });
+        var vm = this;
+        // localStorage.setItem("User",JSON.stringify(firebaseUser.user));
+        vm.uid = localStorage.getItem("Uid");
+        console.log(vm.uid);
+        vm.auth = uid.length > 0 ? true: false;
+        console.log(vm.uid);
+        // firebase.auth().onAuthStateChanged(function(user) {
+        //   if (user) {
+        //     console.log("el usuario esta loguado");
+        //   } else {
+        //     console.log("El usuario no esta logueado");
+        //   }
+        // });
       },
       logout(){
         var vm = this;
-        
         firebase.auth().signOut()
         .then(function() {
           console.log("sesion cerrada");
           localStorage.removeItem("Uid");
           vm.$router.push({path:'/login'});
           vm.logout = true;
+          vm.uid= "";
         })
         .catch(function(error) {
           // An error happened
-          
           console.log(error);
         });
       }
     },
     mounted(){
       var vm = this;
+      console.log("App vue");
       vm.OnAuth();
     }
   };
