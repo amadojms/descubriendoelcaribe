@@ -1,96 +1,100 @@
 <template>
-  <v-layout id="parallax" justify-center style="padding-top:50px">
-    <v-flex xs12 sm12 md12 lg9>
-      <v-card class="opacity elevation-7 border_radius_10">
-        <v-toolbar dark color="info">
-          <template v-if="tour.service == 'hotel'" >
-            <v-btn class="elevation-7" color="grey lighten-5" icon dark to="/hotels">
-              <v-icon color="blue">keyboard_arrow_left</v-icon>
-            </v-btn>
-          </template>
-          <template v-else>
-            <v-btn class="elevation-7" color="grey lighten-5" icon dark to="/">
-              <v-icon color="blue">keyboard_arrow_left</v-icon>
-            </v-btn>
-          </template>
-          <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <!-- <v-btn color="grey lighten-5" dark small absolute bottom right fab @click="dialog = true"> -->
-          <v-btn color="grey lighten-5" icon dark right absolute @click="dialog = true">
-            <v-icon color="blue">email</v-icon>
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-        <!-- <v-toolbar >
-            <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="primary"
-              dark
-              small
-              absolute
-              bottom
-              right
-              fab
-              @click="dialog = true">
-              <v-icon>email</v-icon>
-            </v-btn>
-          </v-toolbar> -->
-        <!-- <v-card-text style="height: 236px;" class="grey lighten-5"></v-card-text> -->
-        <v-card-text class="font-weight-light subheading" style="padding-top:30px; position: relative">
-          {{tour.description}}
-        </v-card-text>
-      </v-card>
-    </v-flex>
-    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-      <v-card >
-        <v-toolbar fixed color="white">
-          <v-btn flat @click.native="dialog = false">
-            <v-icon>close</v-icon>
-          </v-btn>
-          <v-toolbar-title color="#FFF">Correo</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn  flat @click.native="dialog = false">
-              Enviar
-              <v-icon class="pad-l-10">send</v-icon>
-            </v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
-        <v-card-media height="250" :src="tour.image">
-          <!-- <v-layout align-center column justify-center pa-3>
-            <h3 class="headline">Me interesa, deseo mas informacion del tour/hotel {{tour.tour}}.</h3>
-            <span class="grey--text text--lighten-1">Para armar el mejor paquete, al mejor precio.</span>
-          </v-layout> -->
-        </v-card-media>
-        <v-form>
-          <v-container>
-            <v-layout wrap>
-              <v-flex text-xs-center>
-                <h3 class="headline">Me interesa, deseo mas informacion de {{tour.tour}}.</h3>
-                <h4 class="">Para armar el mejor paquete, al mejor precio.</h4>
-              </v-flex>
-              <v-flex xs12 sm12 md12>
-                <v-text-field v-model="name" box color="blue-grey lighten-2" label="Nombre *"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm12 md12>
-                <v-text-field v-model="email" box color="blue-grey lighten-2" label="Email *"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm12 md12>
-                <v-text-field v-model="phone" box color="blue-grey lighten-2" label="Telefono (opcional)"></v-text-field>
-              </v-flex>
-              <!-- <v-flex>
-                <div class="text-xs-right">
-                  <v-btn round color="primary" dark @click="sendEmail">Enviar</v-btn>
-                </div>
-              </v-flex> -->
-            </v-layout>
-          </v-container>
-        </v-form>
-        <v-divider></v-divider>
-      </v-card>
-    </v-dialog>
-  </v-layout>
+  <div id="parallax">
+    <v-container fluid>
+      <v-layout  justify-center style="padding-top:50px">
+        <v-flex xs12 sm12 md12 lg9>
+          <v-card class="opacity elevation-7 border_radius_10">
+            <v-toolbar dark color="info">
+              <template v-if="tour.service == 'hotel'" >
+                <v-btn class="elevation-7" color="grey lighten-5" icon dark to="/hotels">
+                  <v-icon color="blue">keyboard_arrow_left</v-icon>
+                </v-btn>
+              </template>
+              <template v-else>
+                <v-btn class="elevation-7" color="grey lighten-5" icon dark to="/">
+                  <v-icon color="blue">keyboard_arrow_left</v-icon>
+                </v-btn>
+              </template>
+              <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <!-- <v-btn color="grey lighten-5" dark small absolute bottom right fab @click="dialog = true"> -->
+              <v-btn color="grey lighten-5" icon dark right absolute @click="dialog = true">
+                <v-icon color="blue">email</v-icon>
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <!-- <v-toolbar >
+                <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="primary"
+                  dark
+                  small
+                  absolute
+                  bottom
+                  right
+                  fab
+                  @click="dialog = true">
+                  <v-icon>email</v-icon>
+                </v-btn>
+              </v-toolbar> -->
+            <!-- <v-card-text style="height: 236px;" class="grey lighten-5"></v-card-text> -->
+            <v-card-text class="font-weight-light subheading" style="padding-top:30px; position: relative">
+              {{tour.description}}
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+          <v-card >
+            <v-toolbar fixed color="white">
+              <v-btn flat @click.native="dialog = false">
+                <v-icon>close</v-icon>
+              </v-btn>
+              <v-toolbar-title color="#FFF">Correo</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-toolbar-items>
+                <v-btn  flat @click.native="dialog = false">
+                  Enviar
+                  <v-icon class="pad-l-10">send</v-icon>
+                </v-btn>
+              </v-toolbar-items>
+            </v-toolbar>
+            <v-card-media height="250" :src="tour.image">
+              <!-- <v-layout align-center column justify-center pa-3>
+                <h3 class="headline">Me interesa, deseo mas informacion del tour/hotel {{tour.tour}}.</h3>
+                <span class="grey--text text--lighten-1">Para armar el mejor paquete, al mejor precio.</span>
+              </v-layout> -->
+            </v-card-media>
+            <v-form>
+              <v-container>
+                <v-layout wrap>
+                  <v-flex text-xs-center>
+                    <h3 class="headline">Me interesa, deseo mas informacion de {{tour.tour}}.</h3>
+                    <h4 class="">Para armar el mejor paquete, al mejor precio.</h4>
+                  </v-flex>
+                  <v-flex xs12 sm12 md12>
+                    <v-text-field v-model="name" box color="blue-grey lighten-2" label="Nombre *"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm12 md12>
+                    <v-text-field v-model="email" box color="blue-grey lighten-2" label="Email *"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm12 md12>
+                    <v-text-field v-model="phone" box color="blue-grey lighten-2" label="Telefono (opcional)"></v-text-field>
+                  </v-flex>
+                  <!-- <v-flex>
+                    <div class="text-xs-right">
+                      <v-btn round color="primary" dark @click="sendEmail">Enviar</v-btn>
+                    </div>
+                  </v-flex> -->
+                </v-layout>
+              </v-container>
+            </v-form>
+            <v-divider></v-divider>
+          </v-card>
+        </v-dialog>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 <script>
   import firebase from "firebase";

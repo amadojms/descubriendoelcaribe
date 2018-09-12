@@ -53,9 +53,7 @@
       filteredTours() {
         var vm = this;
         return vm.tours.filter(item => {
-          return item.tour !== undefined ?
-            item.tour.toLowerCase().match(vm.filter.toLowerCase()) :
-            [];
+          return item.tour !== undefined ? item.tour.toLowerCase().match(vm.filter.toLowerCase()) :[];
         });
       }
     },
