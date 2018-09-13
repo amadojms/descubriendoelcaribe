@@ -27,11 +27,11 @@
               <v-icon right dark>{{tab.icon}}</v-icon>
             </v-btn>
             <template>
-              <v-btn if="auth" flat to="/admin">
+              <v-btn v-if="auth" flat to="/admin">
                 <div class="font-weight-thin">Config</div>
                 <v-icon right dark>settings</v-icon>
               </v-btn>
-              <v-btn if="auth" @click="logout" flat>
+              <v-btn v-if="auth" @click="signOut" flat>
                 <div class="font-weight-thin">Logout</div>
                 <v-icon right dark>power_settings_new</v-icon>
               </v-btn>
@@ -50,6 +50,7 @@
       <transition
         name="fade"
         mode="out-in"
+        
       >
         <router-view/>
       </transition>
@@ -118,33 +119,44 @@
         miniVariant: false,
         right: true,
         rightDrawer: false,
-        title: "Descubriendo el caribe"
+        title: "Descubriendo el caribe",
+        auth:false
       };
     },
     name: "App",
-    computed: {
-      uid_change(){
-        return this.uid;
-      }
-    },
+    // computed: {
+    //   uid_change(){
+    //     return this.uid;
+    //   }
+    // },
     methods: {
       userLogged(){
         var vm = this;
         JSON.stringify(localStorage.getItem("User"));
         vm.uid = JSON.stringify(localStorage.getItem("Uid"));
+
+        // vm.uid = JSON.stringify(localStorage.getItem("Uid"));
       },
       OnAuth(){
+        var vm = this;
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            console.log("el usuario esta loguado");
+            console.log("el usuario esta logueado");
+            vm.auth = true;
+                    // if(vm.uid.length > 0 && vm.uid !== ""){
+                    //   vm.auth = true;
+                    // }else{
+                    //   vm.auth = false;
+                    // }
           } else {
             console.log("El usuario no esta logueado");
+            vm.auth = false;
           }
         });
       },
-      logout(){
+      signOut(){
         var vm = this;
-        
+        console.log("logout ne");
         firebase.auth().signOut()
         .then(function() {
           console.log("sesion cerrada");
@@ -153,8 +165,6 @@
           vm.logout = true;
         })
         .catch(function(error) {
-          // An error happened
-          
           console.log(error);
         });
       }
@@ -169,7 +179,7 @@
 <style>
   .fade-enter-active,
   .fade-leave-active {
-    transition-duration: 0.1s;
+    transition-duration: 0.4s;
     transition-property: opacity;
     transition-timing-function: ease;
   }

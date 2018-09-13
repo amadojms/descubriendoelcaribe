@@ -17,7 +17,7 @@
       <!-- <v-progress-circular v-if="spinner" indeterminate color="primary"></v-progress-circular> -->
     </v-layout>
     <v-layout row wrap>
-      <v-flex v-for="hotel in filteredHotels" :key="hotel.key" xs12 sm6 md4>
+      <v-flex v-for="hotel in filteredHotels" :key="hotel.key" xs12 sm6 md6 lg4>
         <v-card class="xs-0 pointer" :to="'/detail/'+hotel.$key">
           <v-card-media class="white--text" height="400px" :src="hotel.image">
             <v-container fill-height fluid>

@@ -46,11 +46,11 @@
             <v-btn icon dark @click.native="dialog = false">
               <v-icon>close</v-icon>
             </v-btn>
-            <v-toolbar-title v-if="tourSelected.length> 0">Edita un tour</v-toolbar-title>
+            <v-toolbar-title v-if="tourSelected.$key.length> 0">Edita un tour</v-toolbar-title>
             <v-toolbar-title v-else>Agrega un tour</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <v-btn dark flat v-if="tourSelected.length> 0" :disabled="!valid" @click="saveTour">Editar</v-btn>
+              <v-btn dark flat v-if="tourSelected.$key.length > 0" :disabled="!valid" @click="saveTour">Editar</v-btn>
               <v-btn dark flat v-else :disabled="!valid" @click="createTour">Crear</v-btn>
             </v-toolbar-items>
             <v-menu bottom right offset-y>
@@ -97,6 +97,7 @@
         files: Object,
         fb: firebase.database(),
         tourSelected: {
+          $key:'',
           tour: "",
           description: "",
           placeid: [],
@@ -175,6 +176,7 @@
       },
       editTour(tour) {
         var vm = this;
+        console.log(tour);
         vm.tourSelected = tour;
         vm.dialog = true;
       },
@@ -185,12 +187,13 @@
       },
       saveTour() {
         var vm = this;
-        vm.fb.ref("/").child("tours").child(vm.idtour).update({
+        console.log("savetour",vm.tourSelected,vm.idtour);
+        vm.fb.ref("/").child("tours").child(vm.tourSelected.$key).update({
           description: vm.tourSelected.description,
           include: vm.tourSelected.include,
           tour: vm.tourSelected.tour,
           placeid: vm.tourSelected.placeid,
-          service: vm.tourSelected.service,
+          service: vm.tourSelected.service
         });
       },
       createTour(tour) {
@@ -252,7 +255,7 @@
         var vm = this;
         vm.tourSelected = tour;
         vm.$swal({
-          title: '¿Estas seguro?',
+          title: 'ï¿½Estas seguro?',
           text: "Si eliminar!",
           type: 'warning',
           showCancelButton: true,
