@@ -76,6 +76,16 @@
               <v-flex justify-center>
                 <img class="size" :src="imageUrl.length > 0 ? imageUrl : '/static/img/producto_sin_imagen.png'" alt="Foto subida">
               </v-flex>
+              <v-flex>
+                <!-- <vue-editor v-model="content"></vue-editor> -->
+                <quill-editor v-model="content"
+                ref="myQuillEditor"
+                :options="editorOption"
+                @blur="onEditorBlur($event)"
+                @focus="onEditorFocus($event)"
+                @ready="onEditorReady($event)">
+                </quill-editor>
+              </v-flex>
             </v-form>
           </v-card-text>
         </v-card>
@@ -88,6 +98,7 @@
   export default {
     data() {
       return {
+        content:"",
         imageUrl: '',
         dialog: false,
         search: "",
@@ -150,8 +161,17 @@
             text: "Accion"
             // value: ""
           }
-        ]
+        ],
+        content: '<h2>I am Example</h2>',
+        editorOption: {
+          // some quill options
+        }
       };
+    },
+    computed: {
+      editor() {
+        return this.$refs.myQuillEditor.quill
+      }
     },
     methods: {
       inputFileClick() {
@@ -322,11 +342,25 @@
             }
           });
         });
+      },
+      onEditorBlur(quill) {
+        console.log('editor blur!', quill)
+      },
+      onEditorFocus(quill) {
+        console.log('editor focus!', quill)
+      },
+      onEditorReady(quill) {
+        console.log('editor ready!', quill)
+      },
+      onEditorChange({ quill, html, text }) {
+        console.log('editor change!', quill, html, text)
+        this.content = html
       }
     },
     mounted() {
       var vm = this;
       console.log("mounted ok");
+      console.log('this is current quill instance object', this.editor)
       vm.getPlaces();
       vm.getTours();
       // this.$swal('Heading', 'this is a Heading', 'success');

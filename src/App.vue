@@ -26,22 +26,16 @@
               <div class="font-weight-thin">{{tab.title}}</div>
               <v-icon right dark>{{tab.icon}}</v-icon>
             </v-btn>
-            <template>
-              <v-btn v-if="auth" flat to="/admin">
+            <template v-if="auth">
+              <v-btn  flat to="/admin">
                 <div class="font-weight-thin">Config</div>
                 <v-icon right dark>settings</v-icon>
               </v-btn>
-              <v-btn v-if="auth" @click="signOut" flat>
+              <v-btn @click="signOut" flat>
                 <div class="font-weight-thin">Logout</div>
                 <v-icon right dark>power_settings_new</v-icon>
               </v-btn>
             </template>
-            <!-- <router-link  v-for="tab in tabs" :key="tab.url" class="no_link" :to="tab.url" ><v-btn flat>{{ tab.title }}</v-btn></router-link> -->
-            <!-- <v-tabs v-model="active" color="white" dark slider-color="blue">
-            <v-tab  v-for="tab in tabs" :key="tab.url" ripple @click="tab.url = tab.url">
-              <router-link class="no_link" :to="tab.url" >{{ tab.title }}</router-link>
-            </v-tab>
-          </v-tabs> -->
           </v-toolbar-items>
         </v-toolbar>
       </div>
@@ -105,16 +99,6 @@
             title: "Contacto",
             icon: "person"
           },
-          // {
-          //   url: "/admin",
-          //   title: "Config",
-          //   icon: "settings"
-          // }
-          // {
-          //   url: "/login",
-          //   title: "Login",
-          //   icon: "account_circle"
-          // }
         ],
         miniVariant: false,
         right: true,
@@ -124,30 +108,13 @@
       };
     },
     name: "App",
-    // computed: {
-    //   uid_change(){
-    //     return this.uid;
-    //   }
-    // },
     methods: {
-      userLogged(){
-        var vm = this;
-        JSON.stringify(localStorage.getItem("User"));
-        vm.uid = JSON.stringify(localStorage.getItem("Uid"));
-
-        // vm.uid = JSON.stringify(localStorage.getItem("Uid"));
-      },
       OnAuth(){
         var vm = this;
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            console.log("el usuario esta logueado");
+            console.log("el usuario esta loguado");
             vm.auth = true;
-                    // if(vm.uid.length > 0 && vm.uid !== ""){
-                    //   vm.auth = true;
-                    // }else{
-                    //   vm.auth = false;
-                    // }
           } else {
             console.log("El usuario no esta logueado");
             vm.auth = false;
@@ -163,9 +130,11 @@
           localStorage.removeItem("Uid");
           vm.$router.push({path:'/login'});
           vm.logout = true;
+          vm.uid= "";
+
         })
         .catch(function(error) {
-          console.log(error);
+          vm.$swal(error);
         });
       }
     },
