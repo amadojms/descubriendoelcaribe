@@ -13,6 +13,12 @@ import VueAxios from 'vue-axios'
 import { store } from './store'
 import Spinner from '@/components/spinner'
 import 'vuetify/dist/vuetify.min.css'
+// import { VueEditor } from "vue2-editor";
+import VueQuillEditor from 'vue-quill-editor'
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
 
 Vue.config.productionTip = false
@@ -48,6 +54,8 @@ var config = {
 firebase.initializeApp(config);
 Vue.use(VueAxios, axios);
 Vue.use(VueSweetalert2);
+// Vue.use(VueEditor);
+Vue.use(VueQuillEditor)
 // Vue.use(velocity);
 // Vue.use(Vuex);
 Vue.use(Spinner);

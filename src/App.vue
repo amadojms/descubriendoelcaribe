@@ -26,22 +26,16 @@
               <div class="font-weight-thin">{{tab.title}}</div>
               <v-icon right dark>{{tab.icon}}</v-icon>
             </v-btn>
-            <template v-if="login">
-              <v-btn if="auth" flat to="/admin">
+            <template v-if="auth">
+              <v-btn  flat to="/admin">
                 <div class="font-weight-thin">Config</div>
                 <v-icon right dark>settings</v-icon>
               </v-btn>
-              <v-btn if="auth" @click="logout" flat>
+              <v-btn @click="signOut" flat>
                 <div class="font-weight-thin">Logout</div>
                 <v-icon right dark>power_settings_new</v-icon>
               </v-btn>
             </template>
-            <!-- <router-link  v-for="tab in tabs" :key="tab.url" class="no_link" :to="tab.url" ><v-btn flat>{{ tab.title }}</v-btn></router-link> -->
-            <!-- <v-tabs v-model="active" color="white" dark slider-color="blue">
-            <v-tab  v-for="tab in tabs" :key="tab.url" ripple @click="tab.url = tab.url">
-              <router-link class="no_link" :to="tab.url" >{{ tab.title }}</router-link>
-            </v-tab>
-          </v-tabs> -->
           </v-toolbar-items>
         </v-toolbar>
       </div>
@@ -104,52 +98,29 @@
             title: "Contacto",
             icon: "person"
           },
-          // {
-          //   url: "/admin",
-          //   title: "Config",
-          //   icon: "settings"
-          // }
-          // {
-          //   url: "/login",
-          //   title: "Login",
-          //   icon: "account_circle"
-          // }
         ],
         miniVariant: false,
         right: true,
         rightDrawer: false,
         title: "Descubriendo el caribe",
-        login:false
+        auth:false
       };
     },
     name: "App",
-    computed: {
-      // uid_change(){
-      //   return this.uid;
-      // }
-    },
     methods: {
-      userLogged(){
-        var vm = this;
-        JSON.stringify(localStorage.getItem("User"));
-        vm.uid = JSON.stringify(localStorage.getItem("Uid"));
-      },
       OnAuth(){
         var vm = this;
-        // localStorage.setItem("User",JSON.stringify(firebaseUser.user));
-        vm.uid = localStorage.getItem("Uid");
-        console.log(vm.uid);
-        vm.auth = uid.length > 0 ? true: false;
-        console.log(vm.uid);
-        // firebase.auth().onAuthStateChanged(function(user) {
-        //   if (user) {
-        //     console.log("el usuario esta loguado");
-        //   } else {
-        //     console.log("El usuario no esta logueado");
-        //   }
-        // });
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            console.log("el usuario esta loguado");
+            vm.auth = true;
+          } else {
+            console.log("El usuario no esta logueado");
+            vm.auth = false;
+          }
+        });
       },
-      logout(){
+      signOut(){
         var vm = this;
         firebase.auth().signOut()
         .then(function() {
@@ -158,10 +129,10 @@
           vm.$router.push({path:'/login'});
           vm.logout = true;
           vm.uid= "";
+
         })
         .catch(function(error) {
-          // An error happened
-          console.log(error);
+          vm.$swal(error);
         });
       }
     },
@@ -176,7 +147,7 @@
 <style>
   .fade-enter-active,
   .fade-leave-active {
-    transition-duration: 0.2s;
+    transition-duration: 0.4s;
     transition-property: opacity;
     transition-timing-function: ease;
   }
