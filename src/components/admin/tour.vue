@@ -46,11 +46,11 @@
             <v-btn icon dark @click.native="dialog = false">
               <v-icon>close</v-icon>
             </v-btn>
-            <v-toolbar-title v-if="tourSelected.$key.length> 0">Edita un tour</v-toolbar-title>
+            <v-toolbar-title v-if="tourSelected.$key && tourSelected.$key.length> 0">Edita un tour</v-toolbar-title>
             <v-toolbar-title v-else>Agrega un tour</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <v-btn dark flat v-if="tourSelected.$key.length > 0" :disabled="!valid" @click="saveTour">Editar</v-btn>
+              <v-btn dark flat v-if="tourSelected.$key && tourSelected.$key.length > 0" :disabled="!valid" @click="saveTour">Editar</v-btn>
               <v-btn dark flat v-else :disabled="!valid" @click="createTour">Crear</v-btn>
             </v-toolbar-items>
             <v-menu bottom right offset-y>
