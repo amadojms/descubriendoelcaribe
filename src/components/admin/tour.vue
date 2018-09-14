@@ -74,7 +74,7 @@
                    <input class="hide" type="file" ref="inputFile" accept="image/*" @change="fileChange">
               </template>
               <v-flex justify-center>
-                <img class="size" :src="imageUrl.length > 0 ? imageUrl : '/static/img/producto_sin_imagen.png'" alt="Foto subida">
+                <img class="size" :src="tourSelected.image.length > 0 ? tourSelected.image : '/static/img/producto_sin_imagen.png'" alt="Foto subida">
               </v-flex>
               <v-flex>
                 <!-- <vue-editor v-model="content"></vue-editor> -->
