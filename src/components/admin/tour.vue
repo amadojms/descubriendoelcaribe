@@ -74,11 +74,11 @@
                    <input class="hide" type="file" ref="inputFile" accept="image/*" @change="fileChange">
               </template>
               <v-flex justify-center>
-                <img class="size" :src="tourSelected.image.length > 0 ? tourSelected.image : '/static/img/producto_sin_imagen.png'" alt="Foto subida">
+                <img class="size" :src="tourSelected.image && tourSelected.image.length > 0 ? tourSelected.image : '/static/img/producto_sin_imagen.png'" alt="Foto subida">
               </v-flex>
               <v-flex>
                 <!-- <vue-editor v-model="content"></vue-editor> -->
-                <quill-editor v-model="content"
+                <quill-editor v-model="tourSelected.content"
                 ref="myQuillEditor"
                 :options="editorOption"
                 @blur="onEditorBlur($event)"
@@ -108,15 +108,16 @@
         files: Object,
         fb: firebase.database(),
         tourSelected: {
-          $key:'',
-          tour: "",
-          description: "",
-          placeid: [],
-          include: "",
-          service: "",
-          image: "",
-          radioService: "",
-          place: ""
+          // $key:'',
+          // tour: "",
+          // description: "",
+          // placeid: [],
+          // include: "",
+          // service: "",
+          // image: "",
+          // radioService: "",
+          // place: "",
+          // content:""
         },
         nameRules: [
           // v => !!v || "Nombre es requerido",
@@ -162,7 +163,7 @@
             // value: ""
           }
         ],
-        content: '<h2>I am Example</h2>',
+        // content: '',
         editorOption: {
           // some quill options
         }
@@ -207,18 +208,20 @@
       },
       saveTour() {
         var vm = this;
-        console.log("savetour",vm.tourSelected,vm.idtour);
+        console.log("savetour",vm.tourSelected);
         vm.fb.ref("/").child("tours").child(vm.tourSelected.$key).update({
           description: vm.tourSelected.description,
           include: vm.tourSelected.include,
           tour: vm.tourSelected.tour,
           placeid: vm.tourSelected.placeid,
-          service: vm.tourSelected.service
+          service: vm.tourSelected.service,
+          content: vm.tourSelected.content
+
         });
+        vm.dialog = false;
       },
       createTour(tour) {
         var vm = this;
-
         var file = vm.files[0];
         var metadata = {
           contentType: 'image/jpeg',
@@ -242,6 +245,7 @@
                 include: vm.tourSelected.include,
                 placeid: vm.tourSelected.placeid,
                 service: vm.tourSelected.service,
+                content: vm.tourSelected.content
               });
               vm.dialog = false;
             });
@@ -354,7 +358,8 @@
       },
       onEditorChange({ quill, html, text }) {
         console.log('editor change!', quill, html, text)
-        this.content = html
+        var vm = this;
+        vm.tourSelected.content = html;
       }
     },
     mounted() {
