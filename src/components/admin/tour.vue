@@ -17,7 +17,7 @@
             <td class="text-xs-right">{{ tour.item.description.substr(0,30)}}...</td>
             <!-- <td class="text-xs-right">{{ tour.item.placeid}}</td> -->
             <td class="text-xs-right">{{ tour.item.service }}</td>
-            <td class="text-xs-right">{{ tour.item.include }}</td>
+            <td class="text-xs-right">{{ tour.item.description_en }}</td>
             <td class="text-xs-right">
               <img :src="tour.item.image" width="50" height="50">
             </td>
@@ -62,19 +62,19 @@
           <v-card-text>
             <v-form v-model="valid">
               <v-text-field v-model="tourSelected.tour" :rules="nameRules" :counter="50" label="Nombre del tour" required></v-text-field>
-              <v-text-field v-model="tourSelected.description" :rules="descripcionRules" :counter="50" label="Descripcion del tour" required></v-text-field>
-              <v-text-field v-model="tourSelected.include" :rules="incluyeRules" :counter="50" label="Incluye" required></v-text-field>
+              <v-text-field v-model="tourSelected.description" :rules="descripcionRules" :counter="50" label="Descripcion" required></v-text-field>
+              <v-text-field v-model="tourSelected.description_en" :rules="incluyeRules" :counter="50" label="Descripcion en ingles" required></v-text-field>
               <v-select :items="places" v-model="tourSelected.placeid" item-value="$key" item-text="place" label="Selecciona lugar" single-line></v-select>
               <v-radio-group v-model="tourSelected.service">
                 <v-radio label="Hotel" value="hotel"></v-radio>
                 <v-radio label="Tour" value="tour"></v-radio>
-              </v-radio-group>
-              <v-btn raised class="primary" @click="inputFileClick">Subir imagen</v-btn>
-              <template class="hide">
-                   <input class="hide" type="file" ref="inputFile" accept="image/*" @change="fileChange">
-              </template>
-              <v-flex justify-center>
+              </v-radio-group>                
+              <v-flex class="text-md-center">
                 <img class="size" :src="tourSelected.image && tourSelected.image.length > 0 ? tourSelected.image : '/static/img/producto_sin_imagen.png'" alt="Foto subida">
+              </v-flex>
+              <v-flex class="text-md-center">
+                <v-btn raised class="primary text-md-center" @click="inputFileClick">Subir imagen</v-btn>
+                <input class="hide" type="file" ref="inputFile" accept="image/*" @change="fileChange">
               </v-flex>
               <v-flex>
                 <!-- <vue-editor v-model="content"></vue-editor> -->
@@ -112,7 +112,7 @@
           // tour: "",
           // description: "",
           // placeid: [],
-          // include: "",
+          // description_en: "",
           // service: "",
           // image: "",
           // radioService: "",
@@ -147,8 +147,8 @@
             value: "service"
           },
           {
-            text: "Incluye",
-            value: "include"
+            text: "Descripcion Ingles",
+            value: "description_en"
           },
           {
             text: "Imagen",
@@ -211,7 +211,7 @@
         console.log("savetour",vm.tourSelected);
         vm.fb.ref("/").child("tours").child(vm.tourSelected.$key).update({
           description: vm.tourSelected.description,
-          include: vm.tourSelected.include,
+          description_en: vm.tourSelected.description_en,
           tour: vm.tourSelected.tour,
           placeid: vm.tourSelected.placeid,
           service: vm.tourSelected.service,
@@ -242,7 +242,7 @@
                 image: downloadURL,
                 description: vm.tourSelected.description,
                 tour: vm.tourSelected.tour,
-                include: vm.tourSelected.include,
+                description_en: vm.tourSelected.description_en,
                 placeid: vm.tourSelected.placeid,
                 service: vm.tourSelected.service,
                 content: vm.tourSelected.content
@@ -256,7 +256,7 @@
             //   image: downloadURL,
             //   description: vm.tourSelected.description,
             //   tour: vm.tourSelected.tour,
-            //   include: vm.tourSelected.include,
+            //   description_en: vm.tourSelected.description_en,
             //   placeid: vm.tourSelected.placeid,
             //   service: vm.tourSelected.service,
             // });
@@ -267,7 +267,7 @@
             // image: downloadURL,
             description: vm.tourSelected.description,
             tour: vm.tourSelected.tour,
-            include: vm.tourSelected.include,
+            description_en: vm.tourSelected.description_en,
             placeid: vm.tourSelected.placeid,
             service: vm.tourSelected.service,
           });
@@ -382,8 +382,8 @@
 }
 
 .size{
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 250px;
 }
 </style>
 

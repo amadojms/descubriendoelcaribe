@@ -38,7 +38,12 @@
           </v-toolbar> -->
         <!-- <v-card-text style="height: 236px;" class="grey lighten-5"></v-card-text> -->
         <v-card-text class="font-weight-light subheading" style="padding-top:30px; position: relative">
-          {{tour.description}}
+          <v-flex>{{tour.description}}</v-flex>
+          <v-flex>
+            <v-flex>hola</v-flex>
+            <div v-html="tour.content"></div>
+            </v-flex>
+          
         </v-card-text>
       </v-card>
     </v-flex>

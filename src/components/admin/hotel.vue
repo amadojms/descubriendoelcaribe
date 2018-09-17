@@ -69,9 +69,23 @@
                 <v-radio label="Hotel" value="hotel"></v-radio>
                 <v-radio label="Tour" value="tour"></v-radio>
               </v-radio-group>
-              <v-btn raised class="primary" @click="inputFileClick">Subir imagen</v-btn>
-              <input type="file" ref="inputFile" accept="image/*" @change="fileChange">
-              <img :src="imageUrl" alt="Foto subida">
+              <v-flex class="text-md-center">
+                <img :src="imageUrl" alt="Foto subida">
+              </v-flex>
+              <v-flex class="text-md-center">
+                <v-btn raised class="primary" @click="inputFileClick">Subir imagen</v-btn>
+                <input type="file" ref="inputFile" accept="image/*" @change="fileChange">
+              </v-flex>
+              <v-flex>
+                <!-- <vue-editor v-model="content"></vue-editor> -->
+                <quill-editor v-model="tourSelected.content"
+                ref="myQuillEditor"
+                :options="editorOption"
+                @blur="onEditorBlur($event)"
+                @focus="onEditorFocus($event)"
+                @ready="onEditorReady($event)">
+                </quill-editor>
+              </v-flex>
             </v-form>
           </v-card-text>
         </v-card>
@@ -262,7 +276,7 @@
         var vm = this;
         vm.tourSelected = hotel;
         vm.$swal({
-          title: '¿Estas seguro?',
+          title: 'ï¿½Estas seguro?',
           text: "Si eliminar!",
           type: 'warning',
           showCancelButton: true,
