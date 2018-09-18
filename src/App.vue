@@ -12,6 +12,25 @@
             <v-list-tile-title>{{tab.title}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <template v-if="auth">
+          <v-list-tile to="/admin">
+            <v-list-tile-action>
+              <v-icon>settings</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Config</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
+          <v-list-tile @click="signOut">
+            <v-list-tile-action>
+              <v-icon>power_settings_new</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Logout</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
       </v-list>
     </v-navigation-drawer>
     <template>

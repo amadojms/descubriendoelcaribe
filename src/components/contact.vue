@@ -36,6 +36,16 @@
       </v-container>
     </v-form>
     <v-divider></v-divider>
+    <v-dialog v-model="dialog" persistent max-width="290">
+      <v-card>
+        <v-card-title class="headline">{{ error.code }} </v-card-title>
+        <v-card-text> {{ error.message }} </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" flat @click.native="dialog = false">Cerrar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 <script>
@@ -46,26 +56,33 @@
         name: "",
         email: "",
         phone: "",
+        dialog: false,
+        error:{}
         // isUpdating:false
       };
     },
     methods: {
       sendEmail() {
         var vm = this;
-        this.axios.post("http://localhost:3000/sendEmail", {
+        this.axios
+          .post("http://localhost:3000/sendEmail", {
             name: vm.name,
             email: vm.email,
             phone: vm.phone
           })
           .then(response => {
-            console.log(response);
-            if(response.status){
-              
+            console.log("RESPONSE",response);
+            if (response.error) {
+              vm.dialog = true;
+              vm.error = response.error;
+            }else{
+              vm.$swal("Bien hecho!","Email enviado exitosamente","success");
             }
           })
           .catch(e => {
-            console.log(e);
-            
+            console.log("CATCH",e);
+            vm.dialog = true;
+            vm.error.message = "Algun error ocurrio contacta al administrador";//response.error;
             // this.errors.push(e);
           });
       }
@@ -74,5 +91,4 @@
       var vm = this;
     }
   };
-
 </script>
