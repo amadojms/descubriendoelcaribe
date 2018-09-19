@@ -86,6 +86,16 @@
                 @ready="onEditorReady($event)">
                 </quill-editor>
               </v-flex>
+              <v-flex>
+                <!-- <vue-editor v-model="content"></vue-editor> -->
+                <quill-editor v-model="tourSelected.content_en"
+                ref="myQuillEditor"
+                :options="editorOption"
+                @blur="onEditorBlur($event)"
+                @focus="onEditorFocus($event)"
+                @ready="onEditorReady($event)">
+                </quill-editor>
+              </v-flex>
             </v-form>
           </v-card-text>
         </v-card>
@@ -215,7 +225,8 @@
           tour: vm.tourSelected.tour,
           placeid: vm.tourSelected.placeid,
           service: vm.tourSelected.service,
-          content: vm.tourSelected.content
+          content: vm.tourSelected.content,
+          content_en: vm.tourSelected.content_en,
 
         });
         vm.dialog = false;
@@ -245,7 +256,8 @@
                 description_en: vm.tourSelected.description_en,
                 placeid: vm.tourSelected.placeid,
                 service: vm.tourSelected.service,
-                content: vm.tourSelected.content
+                content: vm.tourSelected.content,
+                content_en: vm.tourSelected.content_en
               });
               vm.dialog = false;
             });
@@ -270,6 +282,8 @@
             description_en: vm.tourSelected.description_en,
             placeid: vm.tourSelected.placeid,
             service: vm.tourSelected.service,
+            content: vm.tourSelected.content,
+            content_en: vm.tourSelected.content_en
           });
           vm.dialog = false;
         }

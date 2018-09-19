@@ -62,26 +62,32 @@
       };
     },
     methods: {
-      sendEmail() {
+      // sendEmail_() {
+      //   var vm = this;
+      //   this.axios
+      //     .post("http://localhost:3000/sendEmail", {
+      //       name: vm.name,
+      //       email: vm.email,
+      //       phone: vm.phone
+      //     })
+      //     .then(response => {
+      //       if (response.error) {
+      //         vm.error = response.error;
+      //         vm.$swal("Algo ocurrio!",response.message,"error");
+      //       }else{
+      //         vm.error = response.error;
+      //         vm.$swal("Bien hecho!",response.message,"warning");
+      //       }
+      //     })
+      //     .catch(e => {
+      //       vm.$swal("Algo ocurrio!","Contacta a un administrador","error");//response.error;
+      //     });
+      // },
+      sendEmail(){
         var vm = this;
-        this.axios
-          .post("http://localhost:3000/sendEmail", {
-            name: vm.name,
-            email: vm.email,
-            phone: vm.phone
-          })
-          .then(response => {
-            if (response.error) {
-              vm.error = response.error;
-              vm.$swal("Algo ocurrio!",response.message,"error");
-            }else{
-              vm.error = response.error;
-              vm.$swal("Bien hecho!",response.message,"warning");
-            }
-          })
-          .catch(e => {
-            vm.$swal("Algo ocurrio!","Contacta a un administrador","error");//response.error;
-          });
+        this.axios.post("http://localhost:9001/sendmail.php",{email:vm.email}).
+          then(response=>{ console.log(response)}).
+            catch(e=>{console.log(e)})
       }
     },
     mounted() {
