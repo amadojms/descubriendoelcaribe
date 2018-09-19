@@ -47,7 +47,7 @@ app.post('/sendEmail', function (req, res) {
   const mailOptions = {
     from: senderAdmin, // senderAdmin address
     to: email,//'amadojms@gmail.com', // list of receivers
-    subject: name+' Lo mejor esta por elegirnos!', // Subject line
+    subject: name+' gracias por tu preferencia. en unos momentos nos pondremos en contacto contigo', // Subject line
     html: '<h3>Gracias por contactarnos!<small>Descubriendo el caribe</small></h3><br><p>Nos pondremos en contacto contigo, al numero '+phone+' lo mas pronto posible.</p>' // plain text body
   };
   transporter.sendMail(mailOptions, function (err, info) {

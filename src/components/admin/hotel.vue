@@ -167,7 +167,8 @@
             text: "Accion"
             // value: ""
           }
-        ]
+        ],
+        editorOption:{}
       };
     },
     methods: {
@@ -344,6 +345,20 @@
               }
             });
           });
+      },
+      onEditorBlur(quill) {
+        console.log('editor blur!', quill)
+      },
+      onEditorFocus(quill) {
+        console.log('editor focus!', quill)
+      },
+      onEditorReady(quill) {
+        console.log('editor ready!', quill)
+      },
+      onEditorChange({ quill, html, text }) {
+        console.log('editor change!', quill, html, text)
+        var vm = this;
+        vm.tourSelected.content = html;
       }
     },
     mounted() {

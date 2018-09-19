@@ -36,7 +36,7 @@
       </v-container>
     </v-form>
     <v-divider></v-divider>
-    <v-dialog v-model="dialog" persistent max-width="290">
+    <!-- <v-dialog v-model="dialog" persistent max-width="290">
       <v-card>
         <v-card-title class="headline">{{ error.code }} </v-card-title>
         <v-card-text> {{ error.message }} </v-card-text>
@@ -45,7 +45,7 @@
           <v-btn color="red darken-1" flat @click.native="dialog = false">Cerrar</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </v-card>
 </template>
 <script>
@@ -71,19 +71,16 @@
             phone: vm.phone
           })
           .then(response => {
-            console.log("RESPONSE",response);
             if (response.error) {
-              vm.dialog = true;
               vm.error = response.error;
+              vm.$swal("Algo ocurrio!",response.message,"error");
             }else{
-              vm.$swal("Bien hecho!","Email enviado exitosamente","success");
+              vm.error = response.error;
+              vm.$swal("Bien hecho!",response.message,"warning");
             }
           })
           .catch(e => {
-            console.log("CATCH",e);
-            vm.dialog = true;
-            vm.error.message = "Algun error ocurrio contacta al administrador";//response.error;
-            // this.errors.push(e);
+            vm.$swal("Algo ocurrio!","Contacta a un administrador","error");//response.error;
           });
       }
     },

@@ -15,10 +15,10 @@
         <div class="justify-center">
           <v-progress-circular v-if="spinner" indeterminate color="primary"></v-progress-circular>
         </div>
-      </v-flex>
+      </v-flex> 
       <v-layout row wrap>
         <v-flex v-for="tour in filteredTours" :key="tour.$key" xs12 sm6 md6 lg4>
-            <v-card class="xs-0 pointer elevation-9 margin-card" :to="'/detail/'+tour.$key" >
+            <v-card class="xs-0 pointer elevation-0 margin-card" :to="'/detail/'+tour.$key" >
               <v-card-media class="white--text" height="300px" :src="tour.image">
                 <v-container fill-height fluid>
                   <v-layout fill-height>
