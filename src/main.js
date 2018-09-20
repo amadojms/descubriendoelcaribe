@@ -10,7 +10,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios'
 // import velocity from 'velocity-animate'
 import Vuex from 'vuex'
-import { store } from './store/store'
+import store from './store/store'
 import Spinner from '@/components/spinner'
 import 'vuetify/dist/vuetify.min.css'
 // import { VueEditor } from "vue2-editor";
@@ -31,13 +31,13 @@ router.beforeEach((to, from, next) => {
   // console.log(from);
   console.log(requiresAuth, uid);
   if (requiresAuth && uid !== null) {
-    console.log("entro aqui 2", uid, requiresAuth);
+    // console.log("entro aqui 2", uid, requiresAuth);
       next();
   } else if (requiresAuth == true && uid == null && to.path == '/admin') {
-      console.log("1", from)
+      // console.log("1", from)
       next('/login');
   }else{
-    console.log("else vue route", to.path);
+    // console.log("else vue route", to.path);
     next();
   }
 });
@@ -73,8 +73,8 @@ Vue.use(Vuetify, { theme: {
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
   store,
+  router,
   components: { App, Spinner },
   template: '<App/>'
 })

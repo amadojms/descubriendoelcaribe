@@ -3,45 +3,24 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export const store = new Vuex.Store({
-  state: {
-    count: 10
-  },
-  mutations: {
-    increment (state) {
-      state.count++
-    },
-    decrement (state) {
-      state.count--
-    }
-  }
+const state = {
+  count: 666
+}
+export default new Vuex.Store({
+  state
 })
-
 
 // export const store = new Vuex.Store({
 //   state: {
-//     user: {
-//       id: 'ajaldslfalsk12',
-//       registeredMeetups: ['aadsfhbkhlk1241']
-//     }
+//     count: 10
 //   },
-//   mutations: {},
-//   actions: {},
-//   getters: {
-//     // loadedMeetups (state) {
-//     //   return state.loadedMeetups.sort((meetupA, meetupB) => {
-//     //     return meetupA.date > meetupB.date
-//     //   })
-//     // },
-//     featuredMeetups (state, getters) {
-//       return getters.loadedMeetups.slice(0, 5)
+//   mutations: {
+//     increment (state) {
+//       state.count++
 //     },
-//     loadedMeetup (state) {
-//       return (meetupId) => {
-//         return state.loadedMeetups.find((meetup) => {
-//           return meetup.id === meetupId
-//         })
-//       }
+//     decrement (state) {
+//       state.count--
 //     }
 //   }
 // })
+
