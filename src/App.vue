@@ -89,7 +89,7 @@
         </v-card-title>
         <v-card-actions class="grey darken-3 justify-center">
           &copy;2018 —
-          <strong>{{title}}</strong>
+          <strong>{{title}} amado {{counter}} </strong>
         </v-card-actions>
       </v-card>
     </v-footer>
@@ -98,6 +98,7 @@
 
 <script>
   import firebase from "firebase";
+ 
   export default {
     data() {
       return {
@@ -135,6 +136,11 @@
         title: "Descubriendo el caribe",
         auth:false
       };
+    },
+    computed: {
+      counter: function() {
+        return this.$store.state.counter
+      }
     },
     name: "App",
     methods: {
