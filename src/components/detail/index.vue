@@ -13,7 +13,7 @@
               <v-icon color="blue">keyboard_arrow_left</v-icon>
             </v-btn>
           </template>
-          <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
+          <v-toolbar-title>{{tour.tour}} {{lang}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <!-- <v-btn color="grey lighten-5" dark small absolute bottom right fab @click="dialog = true"> -->
           <v-btn color="grey lighten-5" icon dark right absolute @click="dialog = true">
@@ -21,29 +21,11 @@
           </v-btn>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <!-- <v-toolbar >
-            <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="primary"
-              dark
-              small
-              absolute
-              bottom
-              right
-              fab
-              @click="dialog = true">
-              <v-icon>email</v-icon>
-            </v-btn>
-          </v-toolbar> -->
-        <!-- <v-card-text style="height: 236px;" class="grey lighten-5"></v-card-text> -->
         <v-card-text class="font-weight-light subheading" style="padding-top:30px; position: relative">
           <v-flex>{{tour.description}}</v-flex>
           <v-flex>
-            <v-flex>hola</v-flex>
             <div v-html="tour.content"></div>
-            </v-flex>
-          
+          </v-flex>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -100,6 +82,11 @@
 <script>
   import firebase from "firebase";
   export default {
+    computed:{
+      lang(){
+        return this.$store.state.lang
+      }
+    },
     data: () => ({
       drawer: null,
       tour: {},

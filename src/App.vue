@@ -140,7 +140,7 @@
       };
     },
     computed: {
-      lang: function() {
+      lang() {
         return this.$store.state.lang
       }
     },

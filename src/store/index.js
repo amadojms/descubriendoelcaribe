@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    count: 10
+    lang: "es"
   }
   // mutations: {
   //   increment (state) {
