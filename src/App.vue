@@ -56,14 +56,14 @@
               </v-btn>
             </template>
             <v-btn  flat>
-              <img width="30" height="30" src="static/img/united-states.png" alt="Cambia a ingles">
+              <img width="30" height="30" src="/static/img/united-states.png" alt="Cambia a ingles">
               <!-- <div class="font-weight-thin">Config</div> -->
               <!-- <v-icon  dark>power_settings_new</v-icon> -->
               <!-- <v-icon right dark @click="lang('en')"><img src="static/img/mexico.png" alt="Cambia a español"></v-icon> -->
               <!-- <v-icon right dark @click="lang('es')"><img src="static/img/united_states.png" alt="Cambia a ingles"></v-icon> -->
             </v-btn>
             <v-btn  flat>
-              <img width="30" height="30" src="static/img/mexico.png" alt="Cambia a español">
+              <img width="30" height="30" src="/static/img/mexico.png" alt="Cambia a español">
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
@@ -78,7 +78,6 @@
         <router-view/>
       </transition>
     </v-content>
-      <!-- <counter></counter> -->
     <v-footer dark height="auto">
       <v-card class="flex" flat tile>
         <v-card-title class="info">
