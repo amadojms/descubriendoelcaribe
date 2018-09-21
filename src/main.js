@@ -10,7 +10,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios'
 // import velocity from 'velocity-animate'
 import Vuex from 'vuex'
-import store from './store/store'
+import { store } from './store'
 import Spinner from '@/components/spinner'
 import 'vuetify/dist/vuetify.min.css'
 // import { VueEditor } from "vue2-editor";
@@ -29,7 +29,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   // console.log(currentUser,requiresAuth,to,from);
   // console.log(from);
-  console.log(requiresAuth, uid);
+  // console.log(requiresAuth, uid);
   if (requiresAuth && uid !== null) {
     // console.log("entro aqui 2", uid, requiresAuth);
       next();
