@@ -77,7 +77,6 @@
                 <input class="hide" type="file" ref="inputFile" accept="image/*" @change="fileChange">
               </v-flex>
               <v-flex>
-                <!-- <vue-editor v-model="content"></vue-editor> -->
                 <quill-editor v-model="tourSelected.content"
                 ref="myQuillEditor"
                 :options="editorOption"
@@ -87,7 +86,6 @@
                 </quill-editor>
               </v-flex>
               <v-flex>
-                <!-- <vue-editor v-model="content"></vue-editor> -->
                 <quill-editor v-model="tourSelected.content_en"
                 ref="myQuillEditor"
                 :options="editorOption"
@@ -108,7 +106,6 @@
   export default {
     data() {
       return {
-        content:"",
         imageUrl: '',
         dialog: false,
         search: "",
@@ -117,18 +114,7 @@
         places: [],
         files: Object,
         fb: firebase.database(),
-        tourSelected: {
-          // $key:'',
-          // tour: "",
-          // description: "",
-          // placeid: [],
-          // description_en: "",
-          // service: "",
-          // image: "",
-          // radioService: "",
-          // place: "",
-          // content:""
-        },
+        tourSelected: {},
         nameRules: [
           // v => !!v || "Nombre es requerido",
           // v => v.length <= 50 || "No debe ser mayor a 50 caracteres"
@@ -173,7 +159,6 @@
             // value: ""
           }
         ],
-        // content: '',
         editorOption: {
           // some quill options
         }
@@ -261,18 +246,6 @@
               });
               vm.dialog = false;
             });
-            // var downloadURL = uploadTask.snapshot.downloadURL;
-            // console.log(downloadURL);
-            // form.image_url = downloadURL;
-            // vm.fb.ref("/").child("tours").push({
-            //   image: downloadURL,
-            //   description: vm.tourSelected.description,
-            //   tour: vm.tourSelected.tour,
-            //   description_en: vm.tourSelected.description_en,
-            //   placeid: vm.tourSelected.placeid,
-            //   service: vm.tourSelected.service,
-            // });
-            // vm.$.toast.open();
           });
         } else {
           vm.fb.ref("/").child("tours").push({

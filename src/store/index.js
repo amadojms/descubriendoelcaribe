@@ -3,12 +3,6 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-// const state = {
-//   count: 666
-// }
-// export default new Vuex.Store({
-//   state
-// })
 
 export const store = new Vuex.Store({
   state: {
@@ -23,4 +17,5 @@ export const store = new Vuex.Store({
   //   }
   // }
 })
+
 

@@ -59,11 +59,11 @@
               <img width="30" height="30" src="static/img/united-states.png" alt="Cambia a ingles">
               <!-- <div class="font-weight-thin">Config</div> -->
               <!-- <v-icon  dark>power_settings_new</v-icon> -->
-              <!-- <v-icon right dark @click="lang('en')"><img src="static/img/mexico.png" alt="Cambia a espaï¿½ol"></v-icon> -->
+              <!-- <v-icon right dark @click="lang('en')"><img src="static/img/mexico.png" alt="Cambia a español"></v-icon> -->
               <!-- <v-icon right dark @click="lang('es')"><img src="static/img/united_states.png" alt="Cambia a ingles"></v-icon> -->
             </v-btn>
             <v-btn  flat>
-              <img width="30" height="30" src="static/img/mexico.png" alt="Cambia a espaï¿½ol">
+              <img width="30" height="30" src="static/img/mexico.png" alt="Cambia a español">
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
@@ -78,6 +78,7 @@
         <router-view/>
       </transition>
     </v-content>
+      <!-- <counter></counter> -->
     <v-footer dark height="auto">
       <v-card class="flex" flat tile>
         <v-card-title class="info">
@@ -89,18 +90,18 @@
         </v-card-title>
         <v-card-actions class="grey darken-3 justify-center">
           &copy;2018 â€”
-          <strong>{{title}} amado {{counter}} </strong>
+          <strong>{{title}} {{lang}}</strong>
         </v-card-actions>
       </v-card>
     </v-footer>
   </v-app>
+  
 </template>
 
 <script>
   import firebase from "firebase";
-  import { store }  from './store'
- 
   export default {
+    name: "App",
     data() {
       return {
         active: 1,
@@ -139,27 +140,23 @@
       };
     },
     computed: {
-      counter: function() {
-        return this.$store.state.counter
+      lang: function() {
+        return this.$store.state.lang
       }
     },
-    name: "App",
     methods: {
       OnAuth(){
         var vm = this;
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            console.log("el usuario esta loguado");
             vm.auth = true;
           } else {
-            console.log("El usuario no esta logueado");
             vm.auth = false;
           }
         });
       },
       signOut(){
         var vm = this;
-        console.log("logout ne");
         firebase.auth().signOut()
         .then(function() {
           console.log("sesion cerrada");
@@ -177,7 +174,7 @@
     mounted(){
       var vm = this;
       vm.OnAuth();
-      console.log(vm.$store.state.counter);
+      console.log(this.$store.state.count);
     }
   };
 
