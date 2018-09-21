@@ -9,8 +9,8 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import axios from 'axios';
 import VueAxios from 'vue-axios'
 // import velocity from 'velocity-animate'
-import Vuex from 'vuex'
-import { store } from './store'
+// import Vuex from 'vuex'
+import  {store}  from './store'
 import Spinner from '@/components/spinner'
 import 'vuetify/dist/vuetify.min.css'
 // import { VueEditor } from "vue2-editor";
@@ -57,7 +57,7 @@ Vue.use(VueSweetalert2);
 // Vue.use(VueEditor);
 Vue.use(VueQuillEditor)
 // Vue.use(velocity);
-Vue.use(Vuex);
+// Vue.use(Vuex);
 Vue.use(Spinner);
 Vue.use(Vuetify, { theme: {
   primary: '#4785f5',

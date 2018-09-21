@@ -59,11 +59,11 @@
               <img width="30" height="30" src="static/img/united-states.png" alt="Cambia a ingles">
               <!-- <div class="font-weight-thin">Config</div> -->
               <!-- <v-icon  dark>power_settings_new</v-icon> -->
-              <!-- <v-icon right dark @click="lang('en')"><img src="static/img/mexico.png" alt="Cambia a español"></v-icon> -->
+              <!-- <v-icon right dark @click="lang('en')"><img src="static/img/mexico.png" alt="Cambia a espaï¿½ol"></v-icon> -->
               <!-- <v-icon right dark @click="lang('es')"><img src="static/img/united_states.png" alt="Cambia a ingles"></v-icon> -->
             </v-btn>
             <v-btn  flat>
-              <img width="30" height="30" src="static/img/mexico.png" alt="Cambia a español">
+              <img width="30" height="30" src="static/img/mexico.png" alt="Cambia a espaï¿½ol">
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
@@ -98,6 +98,7 @@
 
 <script>
   import firebase from "firebase";
+  import { store }  from './store'
  
   export default {
     data() {
@@ -176,7 +177,7 @@
     mounted(){
       var vm = this;
       vm.OnAuth();
-      console.log(this.$store.state.counter);
+      console.log(vm.$store.state.counter);
     }
   };
 
