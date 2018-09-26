@@ -13,7 +13,7 @@
               <v-icon color="blue">keyboard_arrow_left</v-icon>
             </v-btn>
           </template>
-          <v-toolbar-title>{{tour.tour}} {{lang}}</v-toolbar-title>
+          <v-toolbar-title>{{tour.tour}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <!-- <v-btn color="grey lighten-5" dark small absolute bottom right fab @click="dialog = true"> -->
           <v-btn color="grey lighten-5" icon dark right absolute @click="dialog = true">
@@ -22,7 +22,8 @@
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-card-text class="font-weight-light subheading" style="padding-top:30px; position: relative">
-          <v-flex>{{tour.description}}</v-flex>
+          <v-flex v-if="lang == 'es'">{{tour.description}}</v-flex>
+          <v-flex v-else>{{tour.description_en}}</v-flex>
           <v-flex v-if="lang == 'es'">
             <div v-html="tour.content"></div>
           </v-flex>
