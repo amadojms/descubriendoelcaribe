@@ -23,8 +23,11 @@
         </v-toolbar>
         <v-card-text class="font-weight-light subheading" style="padding-top:30px; position: relative">
           <v-flex>{{tour.description}}</v-flex>
-          <v-flex>
+          <v-flex v-if="lang == 'es'">
             <div v-html="tour.content"></div>
+          </v-flex>
+          <v-flex v-else>
+            <div v-html="tour.content_en"></div>
           </v-flex>
         </v-card-text>
       </v-card>

@@ -7,15 +7,12 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     lang: "es"
+  },
+  mutations: {
+    changeLang(state, payload){
+      state.lang = payload.lang;
+    }
   }
-  // mutations: {
-  //   increment (state) {
-  //     state.count++
-  //   },
-  //   decrement (state) {
-  //     state.count--
-  //   }
-  // }
 })
 
 

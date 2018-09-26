@@ -77,6 +77,7 @@
                 <input class="hide" type="file" ref="inputFile" accept="image/*" @change="fileChange">
               </v-flex>
               <v-flex>
+                <p>Contenido en español</p>
                 <quill-editor v-model="tourSelected.content"
                 ref="myQuillEditor"
                 :options="editorOption"
@@ -86,6 +87,7 @@
                 </quill-editor>
               </v-flex>
               <v-flex>
+                <p>Contenido en ingles</p>
                 <quill-editor v-model="tourSelected.content_en"
                 ref="myQuillEditor"
                 :options="editorOption"
