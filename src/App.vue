@@ -180,7 +180,6 @@
     mounted(){
       var vm = this;
       vm.OnAuth();
-      console.log(this.$store.state.count);
     }
   };
 
