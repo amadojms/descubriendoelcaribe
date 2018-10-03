@@ -83,9 +83,18 @@
       //       vm.$swal("Algo ocurrio!","Contacta a un administrador","error");//response.error;
       //     });
       // },
+      // sendEmail(){
+      //   var vm = this;
+      //   this.axios.post("http://localhost:80/sendmail.php",{email:vm.email}).
+      //     then(response=>{ console.log(response)}).
+      //       catch(e=>{console.log(e)})
+      // }
       sendEmail(){
         var vm = this;
-        this.axios.post("http://localhost:80/sendmail.php",{email:vm.email}).
+        var params = {
+          email:vm.email
+        };
+        this.axios.post("https://us-central1-descubriendoelcaribe-fb135.cloudfunctions.net/httpEmail",{email:vm.email}).
           then(response=>{ console.log(response)}).
             catch(e=>{console.log(e)})
       }
