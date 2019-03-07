@@ -92,6 +92,7 @@
     },
     mounted() {
       var vm = this;
+      // vm.sendEmail();
     }
   };
 </script>
