@@ -2,7 +2,7 @@
   <v-container>
     <v-layout>
       <v-spacer></v-spacer>
-      <v-btn color="primary" dark @click="addTour">Agregar</v-btn>
+      <v-btn color="primary" dark @click="addTour">Agregar hotel</v-btn>
     </v-layout>
     <v-layout justify-center>
       <v-card>
@@ -207,17 +207,28 @@ export default {
     },
     saveTour() {
       var vm = this;
-      vm.fb
-        .ref("/")
-        .child("tours")
-        .child(vm.idtour)
-        .update({
-          //image: form.image_url,
+      console.log(vm.tourSelected.$key);
+      // vm.fb
+      //   .ref("/")
+      //   .child("tours")
+      //   .child(vm.tourSelected.$key)
+      //   .update({
+      //     //image: form.image_url,
+      //     description: vm.tourSelected.description,
+      //     include: vm.tourSelected.include,
+      //     tour: vm.tourSelected.tour,
+      //     placeid: vm.tourSelected.placeid,
+      //     service: vm.tourSelected.service
+      //   });
+      vm.fb.ref("/").child("tours").child(vm.tourSelected.$key).update({
           description: vm.tourSelected.description,
-          include: vm.tourSelected.include,
+          description_en: vm.tourSelected.description_en,
           tour: vm.tourSelected.tour,
           placeid: vm.tourSelected.placeid,
-          service: vm.tourSelected.service
+          service: vm.tourSelected.service,
+          content: vm.tourSelected.content,
+          content_en: vm.tourSelected.content_en,
+
         });
     },
     createTour(tour) {

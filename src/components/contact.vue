@@ -85,7 +85,7 @@
       // },
       sendEmail(){
         var vm = this;
-        this.axios.post("http://localhost:80/sendmail.php",{email:vm.email}).
+        this.axios.post("api/index.php",{email:vm.email}).
           then(response=>{ console.log(response)}).
             catch(e=>{console.log(e)})
       }

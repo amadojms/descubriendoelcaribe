@@ -20,8 +20,9 @@
       </v-layout>
       <v-layout row wrap v-else >
         <v-flex v-for="tour in filteredTours" :key="tour.$key" xs12 sm6 md6 lg4>
-            <v-card class="xs-0 pointer elevation-0 margin-card" :to="'/detail/'+tour.$key" >
-              <v-card-media class="white--text" height="300px" :src="tour.image ? tour.image : ''">
+            <v-card class="xs-0 pointer elevation-0 margin-card">
+              <!-- :to="'/detail/'+tour.$key" -->
+              <v-card-media class="white--text" height="300px" :src="tour.image ? tour.image : '/assets/img_default.png'" @click="goToDetail(tour)">
                 <v-container fill-height fluid>
                   <v-layout fill-height>
                     <v-flex xs12 align-end flexbox>
@@ -58,6 +59,12 @@
       }
     },
     methods: {
+      goToDetail(tour){
+        this.$store.commit("changeMainIconHeader", { mainIcon: 'arrow_back' });
+        this.$store.commit("changeMainTitleHeader", { MainTitleHeader: tour.tour });
+        this.$store.commit("changeUrlToBack", { urlToBack: "/" });
+        this.$router.push({path:'/detail/'+tour.$key});
+      },
       getTours() {
         var vm = this;
         vm.spinner = true;
@@ -106,6 +113,9 @@
       var vm = this;
       vm.db = firebase.database().ref();
       vm.getTours();
+      this.$store.commit("changeUrlToBack", { urlToBack: '/'});
+      this.$store.commit("changeMainIconHeader", { mainIconHeader: 'menu' });
+      this.$store.commit("changeMainTitleHeader", { MainTitleHeader: 'Descubriendo el caribe' });
     }
   };
 

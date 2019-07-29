@@ -1,50 +1,39 @@
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+const nodemailer = require('nodemailer');
+const cors = require('cors')({origin:true});
+admin.initializeApp();
 
-const sendgrid = require("sendgrid")
-const client = sendgrid("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")
+let transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'descubriendoelcaribecun@gmail.com',
+        pass: 'DEjesus0692descubriendo'
+    }
+});
 
-function parseBody(){
-    var helper = sendgrid.mail;
-    var fromEmail = new helper.Email(body.from);
-    var toEmail = new helper.Email(body.to);
-    var subject = new body.subject;
-    var content = new helper.Content("text/html",body.content);
-    var mail = new helper.Mail(fromEmail, subject, toEmail, content);
-    return mail.toJSON();
-}
+exports.sendMail = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+      
+        // getting dest email by query string
+        const dest = req.query.dest;
 
-exports.httpEmail = functions.https.onRequest((req, res) => {
-    return Promise.resolve()
-        .then( ()=> {
-            if(req.method !== "POST"){
-                const error = new Error('Only POST requests are acepted');
-                error.code = 405;
-                throw error;
+        const mailOptions = {
+            from: 'descubriendoelcaribecun@gmail.com', // Something like: Jane Doe <janedoe@gmail.com>
+            to: dest,
+            subject: 'I\'M A PICKLE!!!', // email subject
+            html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
+                <br />
+                <img src="https://images.prod.meredith.com/product/fc8754735c8a9b4aebb786278e7265a5/1538025388228/l/rick-and-morty-pickle-rick-sticker" />
+            ` // email content in HTML
+        };
+  
+        // returning result
+        return transporter.sendMail(mailOptions, (erro, info) => {
+            if(erro){
+                return res.send(erro.toString());
             }
-
-            const request = client.emptyRequest({
-                method: 'POST',
-                path: '/v3/mail/send',
-                body: parseBody(req.body)
-            });
-
-            return client.API(request)
-        })
-        .then( (response) => {
-            if(response.body){
-                res.send(response.body);
-            }else{
-                res.end();
-            }
-        })
-        .catch( (err) => {
-            console.error(err);
-            return Promise.reject(err);
-        })
-})
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+            return res.send('Sended');
+        });
+    });    
+});

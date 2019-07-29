@@ -21,7 +21,7 @@ app.use(function (req, res, next) {
 
 
 var senderAdmin = 'descubriendoelcaribecun@gmail.com';
-var passwordAdmin = 'D3scubriendo2018'; // passwordAdmin of the email to use
+var passwordAdmin = ''; // passwordAdmin of the email to use
 
 app.get('/test', function (req, res) {
   res.send('Email enviado');
@@ -68,8 +68,6 @@ app.post('/sendEmail', function (req, res) {
     }
   });
 });
-
-
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
