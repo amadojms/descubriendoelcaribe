@@ -84,7 +84,7 @@
         <router-view />
       </transition>
     </v-content>
-    <v-footer dark height="auto">
+    <v-footer v-if="" dark height="auto">
       <div class="fb-customerchat" page_id="<PAGE_ID>"></div>
       <v-card class="flex" flat tile>
         <v-card-title class="info">
@@ -95,7 +95,7 @@
           </v-btn>
         </v-card-title>
         <v-card-actions class="grey darken-3 justify-center">
-          &copy;2018 —
+          &copy;2019 —
           <strong>{{titleFooter}} {{lang}}</strong>
         </v-card-actions>
       </v-card>
@@ -198,6 +198,7 @@ export default {
   mounted() {
     var vm = this;
     vm.OnAuth();
+    console.log(vm.$router);
   }
 };
 </script>

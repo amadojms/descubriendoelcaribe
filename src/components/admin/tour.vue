@@ -1,11 +1,14 @@
 <template>
   <v-container>
-    <v-layout>
-      <v-spacer></v-spacer>
-      <v-btn color="primary" dark @click="addTour">Agregar tour</v-btn>
-    </v-layout>
+    <!-- <v-layout>  -->
+
+      <!-- <v-spacer></v-spacer> -->
+      <!-- <v-btn color="primary" dark @click="addTour">Agregar tour</v-btn> -->
+
+    <!-- </v-layout> -->
     <!-- <v-layout> -->
       <v-card>
+        
         <v-card-title>
           <h3>Listado de tours</h3>
           <v-spacer></v-spacer>
@@ -47,6 +50,18 @@
           >Tu busqueda "{{ search }}", no encontro ningun resultado.</v-alert>
         </v-data-table>
       </v-card>
+      <v-fab-transition>
+      <v-btn @click="addTour"
+        color="green"
+        dark
+        fab
+        fixed
+        bottom
+        right
+      >
+        <v-icon>add</v-icon>
+      </v-btn>
+    </v-fab-transition>
     <!-- </v-layout> -->
     <!-- Modal para agregar o editar un tour -->
     <!-- <v-layout row> -->
@@ -180,6 +195,7 @@ import firebase from "firebase";
 export default {
   data() {
     return {
+      fab: false,
       radioLanguage: "esp",
       imageUrl: "",
       dialog: false,
