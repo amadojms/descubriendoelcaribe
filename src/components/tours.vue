@@ -2,7 +2,8 @@
   <v-container grid-list-md text-xs-center>
     <v-layout row>
       <v-flex sm12>
-        <v-text-field id="search_tour" name="in_tour" label="Busca un tour" single-line prepend-icon="search" solo v-model="filter"></v-text-field>
+        <v-text-field id="search_tour" name="in_tour" label="Busca un tour" prepend-icon="search"  v-model="filter"></v-text-field>
+        <!-- solo single-line -->
       </v-flex>
     </v-layout>
     <v-layout justify-center>

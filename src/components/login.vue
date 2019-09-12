@@ -56,6 +56,11 @@
     props: {
       source: String
     },
+    computed:{
+      route(){
+        return  
+      }
+    },
     methods: {
       login() {
         var vm = this;
