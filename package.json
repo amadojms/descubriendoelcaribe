@@ -16,7 +16,7 @@
     "email-templates": "^4.0.3",
     "firebase": "^5.0.4",
     "http": "0.0.0",
-    "nodemailer": "^4.6.7",
+    "nodemailer": "^6.4.16",
     "path": "^0.12.7",
     "velocity-animate": "^2.0.5",
     "vue": "^2.5.2",
